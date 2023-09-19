@@ -1,0 +1,121 @@
+/* your styles go here */
+
+
+
+/*  */
+.abc{
+    position: relative;
+   
+}
+
+.abs {
+    position: absolute;
+    left: -2px;
+    top: 40%;
+}
+
+
+.abm {
+    position: absolute;
+    left: -2px;
+    top: 50%;
+}
+
+.btnrelation{
+    position: absolute;
+    left: -2px;
+    top: 60%;
+    background-color:  #555555;
+    color: white;
+    
+
+}
+
+/* price range */
+.price-range .price-input {
+    width: 100%;
+    display: flex;
+    margin: 30px 0 35px;
+  }
+  .price-range  .price-input .field {
+    display: flex;
+    width: 100%;
+    height: 45px;
+    align-items: center;
+  }
+  .price-range .field input {
+    width: 100%;
+    height: 100%;
+    outline: none;
+    font-size: 19px;
+    margin-left: 12px;
+    border-radius: 5px;
+    text-align: center;
+    border: 1px solid #999;
+    -moz-appearance: textfield;
+  }
+  .price-range input[type="number"]::-webkit-outer-spin-button,
+  .price-range input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  .price-range .price-input .separator {
+    width: 130px;
+    display: flex;
+    font-size: 19px;
+    align-items: center;
+    justify-content: center;
+  }
+  .price-range .slider {
+    height: 5px;
+    position: relative;
+    background: #ddd;
+    border-radius: 5px;
+  }
+  .price-range .slider .progress {
+    height: 100%;
+    left: 6%;
+    right: 60%;
+    position: absolute;
+    border-radius: 5px;
+    background: #374FCA;
+  }
+  .price-range  .range-input {
+    position: relative;
+  }
+  .price-range  .range-input input {
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    top: -5px;
+    background: none;
+    pointer-events: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+  .price-range input[type="range"]::-webkit-slider-thumb {
+    height: 17px;
+    width: 17px;
+    border-radius: 50%;
+    background: #374FCA;
+    pointer-events: auto;
+    -webkit-appearance: none;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+  }
+  .price-range input[type="range"]::-moz-range-thumb {
+    height: 17px;
+    width: 17px;
+    border: none;
+    border-radius: 50%;
+    background: #374FCA;
+    pointer-events: auto;
+    -moz-appearance: none;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+  }
+
+
+
+#image-container img:hover {
+    cursor: zoom-in !important;
+}
+  
+  

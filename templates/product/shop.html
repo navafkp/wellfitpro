@@ -1,0 +1,345 @@
+{% extends 'product/base.html' %}
+
+{% load static %}
+{% block content %}
+
+      <!--  Modal -->
+
+      {% for product in pdt %}
+      <div class="modal fade" id="productView-{{product.id}}" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content overflow-hidden border-0">
+            <button class="btn-close p-4 position-absolute top-0 end-0 z-index-20 shadow-0" type="button" data-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-body p-0">
+
+              <div class="row align-items-stretch">
+                {% if product.productimage_set.all %}
+                <div class="col-lg-6 p-lg-0">
+                  
+                  <a href="{% url 'productdetail' %}?prodct={{product.slug}}" class=" product-view d-block h-100 bg-cover bg-center" style="background: url('/media/{{product.productimage_set.first.image}}')" >
+                   </a>
+                   
+                  </div>
+                  {% endif %}
+                
+              
+                <div class="col-lg-6">
+                  <div class="p-4 my-md-4">
+                    <ul class="list-inline mb-2">
+                      <li class="list-inline-item m-0"><i class="fas fa-star small text-warning"></i></li>
+                      <li class="list-inline-item m-0 1"><i class="fas fa-star small text-warning"></i></li>
+                      <li class="list-inline-item m-0 2"><i class="fas fa-star small text-warning"></i></li>
+                      <li class="list-inline-item m-0 3"><i class="fas fa-star small text-warning"></i></li>
+                      <li class="list-inline-item m-0 4"><i class="fas fa-star small text-warning"></i></li>
+                    </ul>
+                    <h2 class="h4">{{product.name}}</h2>
+                    <p class="text-muted">{{product.price}}</p>
+                    <p class="text-sm mb-4">{{product.short_description}}</p>
+                    <div class="row align-items-stretch mb-4 gx-0">
+                      <div class="col-sm-7">
+                       
+                      </div>
+
+                    
+              <div class="product-container">
+                <!-- Product details -->
+               
+                
+                <!-- Add to cart button -->
+                <div class="col-sm-3 pl-sm-0">
+                 
+                  <div class="input-group-append">
+                    <button data-product-id="{{ product.id }}" class="btn btn-dark btn-sm btn-block h-100 d-flex align-items-center justify-content-center px-0 addToCartBtn">Add to cart</button>
+                  </div>
+                </div>
+              </div>
+
+
+
+
+                      
+
+
+                    </div>
+                    
+
+
+                    <div class="product-container">
+                      <!-- Product details -->
+                      <input type="hidden" class="product-id" value="{{product.id}}">
+                     
+                      
+                    
+                      <!-- Add to cart button -->
+                      <div class="col-sm-3 pl-sm-0">
+                        
+                        <div class="input-group-append">
+                          <button data-product-id="{{ product.id }}" class="  addTowishlistBtn"><i class="far fa-heart me-2"></i></button>
+                        </div>
+                      </div>
+                    </div>
+
+
+
+                    {% comment %}  {% endcomment %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% endfor %}
+      <div class="container">
+        <!-- HERO SECTION-->
+        <section class=" mb-5 bg-light">
+          <div class="container">
+            <div class="row px-4 px-lg-5 py-lg-4 align-items-center">
+              <div class="col-lg-6">
+                <h1 class="h2 text-uppercase mb-0">Shop</h1>
+              </div>
+              <div class="col-lg-6 text-lg-end">
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb justify-content-lg-end mb-0 px-0 bg-light">
+                    <li class="breadcrumb-item"><a class="text-dark" href="index.html">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Shop</li>
+                  </ol>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="py-5">
+          <div class="container p-0">
+            <div class="row">
+              <!-- SHOP SIDEBAR-->
+              <div class="  col-lg-3 order-2 order-lg-1">
+                
+                {% comment %} <div class="py-2 px-4 bg-dark text-white mb-3"><strong class="small text-uppercase fw-bold">CATEGORIES</strong></div> {% endcomment %}
+                
+                <ul class="list-unstyled small text-muted ps-lg-4 font-weight-normal">
+                  {% comment %} <form action="{% url 'shop' %}" method='GET'>
+                    {% csrf_token %}
+                  {% for category in ctgy%}
+                  <input name="cat" type="checkbox" value="{{category.id}}">{{category.name}}<br>
+                
+
+                     
+                 {% endfor %}
+                 <input style="background-color:#555" class="mt-4 text-white" type="submit" value="apply">
+                  </form> {% endcomment %}
+                  
+
+                  {% comment %} <li class="mb-2"><a class="reset-anchor" href="#!">{{category.name}}</a></li> {% endcomment %}
+              
+                
+                
+                
+                <div class="py-2 px-4 bg-dark text-white mt-5 mb-3"><strong class="small text-uppercase fw-bold">Price range</strong></div>
+                <div class="price-range">
+                  <div class=" mt-5 slider">
+                    <div class="progress"></div>
+                  </div>
+
+                  
+                  <div class="range-input">
+                    <input type="range" class="range-min" min="0" max="100000" value="0" step="100">
+                    <input type="range" class="range-max" min="0" max="100000" value="37000" step="100">
+                  </div>
+
+                <form action="{% url 'shop' %}" method='get'>
+                  
+                <div class="price-input">
+                  
+                  <div class="field">
+                    <input name="min" type="number" class="input-min" {% if min_price is None %} value="0" {% else %} value="{{min_price}}" {% endif %}>
+                  </div>
+                  <div class="field">
+                    <input name = "max" type="number" class="input-max" {% if max_price is None %} value="37000" {% else %} value="{{max_price}}" {% endif %}>
+                  </div>
+                  
+                </div>
+                <div class="py-2 px-4 bg-dark text-white mb-3"><strong class="small text-uppercase fw-bold">CATEGORIES</strong></div>
+                {% for category in ctgy%}
+
+                <input name="cat" type="checkbox" value="{{category.id}}" {% if category.id in box %} checked {% endif %}>{{category.name}}<br>
+              
+
+                   
+               {% endfor %}
+                
+                <input style="background-color:black; color:white;" type="submit" value = "Apply">
+                 </form>
+                
+              
+              </div>
+              
+
+          
+
+
+                {% comment %}  {% endcomment %}
+
+                <div class="py-2 px-4 bg-dark text-white mt-5 mb-3"><strong class="small text-uppercase fw-bold">Show only</strong></div>
+                
+                
+              <form action="{% url 'shop' %}" method = 'get'>
+                {% csrf_token %}
+
+      
+                  <input name="featured"  type="checkbox" value="Featured" {% if check_box_selection == "Featured" %} checked {% endif %}>Featured<br>
+                  
+              
+                  <input style="background-color:#555" class="mt-4 text-white" type="submit" value="apply">
+              </form>
+                
+              </div>
+              <!-- SHOP LISTING-->
+              <div class="col-lg-9 order-1 order-lg-2 mb-5 mb-lg-0">
+                <div class="row mb-3 align-items-center">
+                  <div class="col-lg-6 mb-2 mb-lg-0">
+                    {% comment %} <p class="text-sm text-muted mb-0">Showing 1–12 of 53 results</p> {% endcomment %}
+                  </div>
+                  <div class="col-lg-6">
+                    <ul class="list-inline d-flex align-items-center justify-content-lg-end mb-0">
+                      <li class="list-inline-item text-muted me-3"><a class="reset-anchor p-0" href="#!"><i class="fas fa-th-large"></i></a></li>
+                      <li class="list-inline-item text-muted me-3"><a class="reset-anchor p-0" href="#!"><i class="fas fa-th"></i></a></li>
+                      <li class="list-inline-item">
+                        {% comment %} data-customclass="form-control form-control-sm" {% endcomment %}
+
+
+                      <form action = "{% url 'shop' %}" method='get'>
+                        {% comment %} <select name="myselect" id="myselect" onchange="this.form.submit()"> {% endcomment %}
+
+                        
+                          <select name="myselect" id="myselect" onchange="this.form.submit()">
+                            <option value="Sort By" {% if price_filter_value is None %} selected {% endif %}>Sort By</option>
+                            <option value="low-high" {% if price_filter_value == 'low-high' %} selected {% endif %}>Price: Low to High</option>
+                            <option value="high-low" {% if price_filter_value == 'high-low' %} selected {% endif %}>Price: High to Low</option>
+                        </select>
+                        
+                          
+                      </form>
+
+
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="row">
+                  <!-- PRODUCT-->
+
+                    {% for message in messages %}
+                      <p style="color:red;">{{message}}</p>
+                    {% endfor %}
+              
+
+                  {% for product in pdt %}
+                  <div class="col-lg-4 col-sm-6">
+                    <div class="product text-center">
+                      <div class="mb-3 position-relative">
+                        {% comment %} <div class="badge text-white bg-"></div><a class="d-block" href="detail.html"><img class="img-fluid w-100" src="/media/{{product.productimage.image}}" alt="..."></a> {% endcomment %}
+                        
+                        
+                        {% if product.productimage_set.all %}
+                        <a href="{% url 'productdetail' %}?prodct={{product.slug}}"> <img class="img-fluid w-100" src="/media/{{ product.productimage_set.first.image }}" alt="..."></a>
+                      {% else %}
+                      
+                        <!-- Handle case when no product image is available -->
+                        <img class="img-fluid w-100" src="/media/default-image.jpg" alt="No Image">
+                      {% endif %}
+                      {% if offer_dispaly %}
+                      {% for banner in offer_dispaly %} 
+                      {% if product.id == banner.id %}
+                      <div class="product-banner"> 
+                        <div class="offer-overlay">
+                            <p style="font-size:9px" class="offer-text m-0">{{banner.display}}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor  %}
+                    {% endif %}
+
+
+
+                        <div class="product-overlay">
+                          <ul class="mb-0 list-inline" style="display: inline-flex;}">
+                            {% comment %} <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-outline-dark" href="#!"><i class="far fa-heart"></i></a></li> {% endcomment %}
+
+                    <li>
+                      <div class="product-container">
+                        <!-- Add to cart button -->
+                        <input type="hidden" class="product-id" value="{{product.id}}">
+                        <button data-product-id="{{ product.id }}" class=" btn btn-sm btn-outline-dark list-inline-item mr-0 addTowishlistBtn"><i
+                            class="far fa-heart me-2"></i></button>          
+                      </div>
+
+                    </li>
+
+
+                          
+                          <li>
+                            
+                             
+                            <div class="product-container">
+                              <!-- Add to cart button -->
+                              <input type="hidden" class="product-id" value="{{product.id}}">
+              
+                              
+              
+                                <div class="input-group-append">
+                                  <button data-product-id="{{ product.id }}"
+                                    class="btn btn-dark btn-sm btn-block h-100 d-flex align-items-center justify-content-center px-0 addToCartBtn">Add
+                                    to cart</button>
+                                </div>
+                            
+                            </div>
+                           
+                  
+                          </li>
+                            <li class="list-inline-item mr-0"><a class="btn btn-sm btn-outline-dark" href="#productView-{{product.id}}" data-toggle="modal"><i class="fas fa-expand"></i></a></li>
+                          </ul>
+                        </div>
+                      </div>
+                      <h6> <a class="reset-anchor" href="detail.html">{{product.name}}</a></h6>
+   
+                      {% if data %}
+                      {% for offer in data %}
+                      {% if offer.id == product.id  and offer.product_price_withoffer != product.price %}
+                      <div class="d-flex">
+                      <p style="color:green!important;" class="small text-muted ms-4 px-4 fw-bold ">{{offer.product_price_withoffer}}</p>
+                      <p class="small text-muted"><del >{{product.price}}<del></p>
+                      </div>
+                      {% elif offer.id == product.id  and offer.product_price_withoffer == product.price %}
+                      <p style="color:black!important;" class="small text-muted ms-4 px-4 fw-bold ">{{product.sale_price}}</p>
+                       {% endif %}
+                       {% endfor %}
+                       {% endif %}
+
+                     
+                    </div>
+                  </div>
+                  {% endfor %}
+
+                </div>
+
+                <!-- PAGINATION-->
+                {% comment %} <nav aria-label="Page navigation example">
+                  <ul class="pagination justify-content-center justify-content-lg-end">
+                    <li class="page-item mx-1"><a class="page-link" href="#!" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                    <li class="page-item mx-1 active"><a class="page-link" href="#!">1</a></li>
+                    <li class="page-item mx-1"><a class="page-link" href="#!">2</a></li>
+                    <li class="page-item mx-1"><a class="page-link" href="#!">3</a></li>
+                    <li class="page-item ms-1"><a class="page-link" href="#!" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                  </ul>
+                </nav> {% endcomment %}
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+
+      
+      {% endblock %}

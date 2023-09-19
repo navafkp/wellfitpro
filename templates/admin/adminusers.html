@@ -1,0 +1,77 @@
+{% extends 'admin/base.html' %}
+{% block content %}
+
+            <!--  Sales Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-secondary text-center rounded p-4">
+                    <div style="justify-content: space-between;" class="d-flex mb-4">
+                        <h6 class="mb-0">Users</h6>
+
+                        <form style = "width:max-content; color: black" role="search" action="{% url 'users' %}" method="get">
+                            <input type="search" placeholder="search_user" name="user">
+                            <button class=" btn-primary searchbtn" type="submit">Search</button>
+                        </form>
+
+
+                       <form class="d-none d-md-flex mb-3 ">
+                          
+                            <select class="form-select form-select-xs " style="width: max-content;" name="filter_user" onchange="this.form.submit()">
+                                <option value="Sort by">Sort by</option>
+                                <option value="first_name">First Name</option>
+                                <option value="last_name"> Last Name </option>
+                                <option value="ID">ID</option>
+                            </select>
+                        </form> 
+
+
+
+
+                    </div>
+                   
+                   
+                    <div class="table-responsive">
+                        <table class="table text-start align-middle table-bordered table-hover mb-0">
+                            <thead>
+                                <tr class="text-white">
+                                    <th scope="col">ID</th>
+                                    <th scope="col">First name</th>
+                                    <th scope="col">Last name</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Phone number</th>
+                                    <th scope="col">Blocked</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in data %}
+                                <tr>
+                                    <td>{{user.id}}</td>
+                                    <td>{{user.first_name}}</td>
+                                    <td>{{user.last_name}}</td>
+                                    <td>{{user.email}}</td>
+                                    <td>{{user.phone}}</td>
+                                    <td>{{user.is_blocked}}</td>
+                                    <td>
+                                       
+                                        <form method="post" action="{% url 'block' user.id %}">
+                                            {% csrf_token %}
+                                            <select class="form-select form-select-xs mb-3" style="width: max-content;" name="action" onchange="this.form.submit()">
+                                                <option {% if not user.is_blocked %} selected {% endif %} value="activate">Active</option>
+                                                <option {% if user.is_blocked %} selected {% endif %} value="block">Block</option>
+                                            </select>
+                                            {% comment %} <button type="submit" class="btn btn-sm btn-primary">Submit</button> {% endcomment %}
+                                        </form>
+                                   
+                                    </td>
+                                    {% comment %} <td><a class="btn btn-sm btn-primary" href="">View</a></td> {% endcomment %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                
+            <!--  Sales End -->
+
+{% endblock %}
+           

@@ -1,0 +1,448 @@
+{% extends 'user/base.html' %}
+{% block content %}
+            <div class="container-fluid pt-4 px-4">
+               
+                <div style="width:100%" class="bg-secondary text-center rounded p-4 ">
+                    <div>
+                        <form action="{% url 'user_profile' %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-floating mb-3">
+                                <input name="Email" value="{{user_obj.email}}" type="email" class="form-control bg-black "
+                                    id="floatingInput" placeholder="name@example.com" readonly>
+                                <label for="floatingInput">Email address</label>
+                            </div>
+                            <!--  -->
+                            <div class="form-floating mb-4">
+                                <input name="First_name" type="text" class="form-control bg-white border-line"
+                                    id="floatingPassword" value="{{user_obj.first_name}}" placeholder="First name">
+                                <label for="floatingPassword">First name</label>
+                            </div>
+                            <!--  -->
+                            <div class="form-floating mb-4">
+                                <input name="Last_name" value="{{user_obj.last_name}}" type="text" class="form-control bg-white border-line"
+                                    id="floatingPassword" placeholder="Last name">
+                                <label for="floatingPassword">Last name</label>
+                            </div>
+                            <!--  -->
+                            <div class="form-floating mb-4">
+                                <input name="Phone_number" value="{{user_obj.phone}}" type="tel" class="form-control bg-white border-line"
+                                    id="floatingPassword" placeholder="Phone Number" >
+                                <label for="floatingPassword">Phone Number</label>
+                            </div>
+                            <!--  -->
+                            
+                            <!--  -->
+                            
+                            <button type="submit" name="update_user" style="background-color: #374FCA;" class="btn mb-4"
+                              ><span class="text-white"> Make Changes</span> </button>
+                           
+                            
+                        </form>
+                    </div>
+
+
+
+{% comment %}  {% endcomment %}
+
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h6 class="mb-0">Manage your Address</h6>
+                        
+                    </div>
+                    <div style="text-align:end; margin-right:2%; margin-bottom:1%;">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addaddressmodal">  Add Address </button>
+                            
+                        {% comment %} <button type="button" class="btn btn-primary" > View all address</button> {% endcomment %}
+                              
+                    </div>
+
+
+
+
+
+{% comment %} view all address {% endcomment %}
+
+
+<div style="font-size: 8px;" class="table-responsive">
+    <table class="table text-start align-middle table-bordered table-hover mb-0">
+        <thead>
+            <tr style="font-size: 8px;" class="text-dark">
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone Number</th>
+                
+                
+                <th scope="col">Address1</th>
+                <th scope="col">Address2</th>
+                <th scope="col">City</th>
+                <th scope="col">State</th>
+                <th scope="col">Country</th>
+                <th scope="col">PIN</th>
+            </tr>
+        </thead>
+        <tbody style="font-size: 8px;">
+            {% for address in addresses%}
+            <tr>
+               
+                <td>
+                {{address.first_name}}
+                    
+                </td>
+                <td>{{address.last_name}}</td>
+                <td>{{address.email}}</td>
+                <td>
+                    
+                    {{address.phoneNumber}}
+                    
+                    
+                </td>
+            
+                <td>{{address.addressline1}}</td>
+
+                
+                <td>
+                    {{address.addressline2}} 
+                    
+
+                </td>
+
+                
+
+        <td>{{address.city}}</td>
+      
+        <td>{{address.state.name}}</td>
+ 
+
+        <td>{{address.country.name}}</td>
+        <td>{{address.pin}}</td>
+
+
+<td>
+    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+        data-target="#editaddressModal-{{address.id}}">
+        Edit
+    </button>
+</td>
+                <td>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                        data-bs-target="#deleteaddressModal-{{address.id}}">
+                        Del
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+            {% comment %} {% endfor %} {% endcomment %}
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    {% comment %}  {% endcomment %}
+                    
+
+
+                    
+
+
+                </div>
+
+               
+            </div>
+            <!--  Sales End -->
+
+           
+            <!-- Footer Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-secondary rounded-top p-4">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 text-center text-sm-start">
+                            &copy; <a href="#">FitPro</a>, All Right Reserved.
+                        </div>
+                        <div class="col-12 col-sm-6 text-center text-sm-end">
+                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                            Designed By <a href="">FitPro</a>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Footer End -->
+        </div>
+        <!-- Content End -->
+
+
+{% comment %} add address {% endcomment %}
+
+<div class="modal fade" id="addaddressmodal" tabindex="-1" aria-labelledby="addaddressmodalLabel"
+aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="addaddressmodalLabel">Add Address</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+            <form action="{% url 'user_profile' %}" id="formforaddaddress" enctype="multipart/form-data" method="post">
+
+                {% csrf_token %}
+
+                <input type="hidden" id="source_input" name="source" value="">
+                <div class="modal-body">
+{% comment %}  {% endcomment %}
+                    
+<div class="col-md-6">
+    <label for="inputFirstname" class="form-label">First name</label>
+    <input name="First_name" type="text" class="form-control" id="inputFirstname"  required>
+</div>
+
+<div class="col-md-6">
+    <label for="inputLastname" class="form-label">Last name</label>
+    <input name="Last_name" type="text" class="form-control" id="inputLastname" required>
+</div>
+
+<div class="col-md-6">
+    <label for="inputEmail" class="form-label">Email</label>
+    <input name="Email" type="email" placeholder="fitpto@gmail.com" class="form-control" id="inputEmail" required>
+</div>
+
+    <div class="col-md-6">
+      <label for="inputPhone" class="form-label">Phone Number</label>
+      <input name="Phone_number" placeholder="+918129777880" type="text" class="form-control" id="inputPhone" required>
+    </div>
+    <div class="col-12">
+      <label for="inputAddress1" class="form-label">Address 1</label>
+      <input name ="Addressline1" type="text" class="form-control" id="inputAddress1" placeholder=" street name, and locality" required>
+    </div>
+    <div class="col-12">
+      <label for="inputAddress2" class="form-label">Address 2</label>
+      <input name="Addressline2" type="text"  class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor"  required>
+    </div>
+    <div class="col-md-6">
+      <label for="inputCity" class="form-label">City</label>
+      <input name="City" type="text" class="form-control" id="inputCity"  required>
+    </div>
+    <div class="col-md-4">
+        <label for="inputState" class="form-label">State</label>
+        <select name="State" id="inputState" class="form-select" required>
+          <option value="">Choose...</option>
+          
+        
+            {% for state in states %}
+            
+          
+            <option value = "{{state.id}}">{{ state.name }}</option>
+          
+          {% endfor %}
+         
+        </select>
+      </div>
+     
+
+    <div class="col-md-4">
+        <label for="inputCountry" class="form-label">Country</label>
+        <select name="Country" id="inputCountry" class="form-select"  required>
+          <option value="">Choose...</option>
+          
+            
+                {% for country in countries %}
+                    <option value = "{{country.id}}">{{ country.name }}</option>
+                {% endfor %}
+           
+      
+        </select>
+      </div>
+
+    <div class="col-md-2">
+      <label for="inputPin" class="form-label">PIN</label>
+      <input name="pin" type="text" class="form-control" id="inputPin"  required >
+    </div>
+    
+    
+    
+   
+
+                    
+{% comment %}  {% endcomment %}
+                </div>
+
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-bs-dismiss="modal"
+                        value="Cancel">
+                        <button type="submit" id="addAddressButton" name="add_address">Add</button>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+</div>
+</div>
+{% comment %} end {% endcomment %}
+
+
+
+
+{% comment %} edit {% endcomment %}
+
+
+{% for address in addresses%}
+                <div class="modal fade" id="editaddressModal-{{address.id}}" tabindex="-1" role="dialog"
+                    aria-labelledby="editaddressModalLabel-{{address.id}}" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editaddressModalLabel-{{address.id}}">Modal title</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                <form action="{% url 'update_address' id=address.id %}" enctype="multipart/form-data" method="post">
+
+                                    {% csrf_token %}
+
+
+                                    <div class="modal-body">
+                                        {% comment %}  {% endcomment %}
+            
+                                        <div class="col-md-6">
+                                            <label for="inputFirstname" class="form-label">First name</label>
+                                            <input name="First_name" value="{{address.first_name}}" type="text" class="form-control" id="inputFirstname"  required>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <label for="inputLastname" class="form-label">Last name</label>
+                                            <input name="Last_name"  value="{{address.last_name}}" type="text" class="form-control" id="inputLastname" required>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <label for="inputEmail" class="form-label">Email</label>
+                                            <input name="Email"  value="{{address.email}}" type="email" placeholder="fitpto@gmail.com" class="form-control" id="inputEmail" required>
+                                        </div>
+                                        
+                                            <div class="col-md-6">
+                                              <label for="inputPhone" class="form-label">Phone Number</label>
+                                              <input name="Phone_number"  value="{{address.phoneNumber}}" placeholder="+918129777880" type="text" class="form-control" id="inputPhone" required>
+                                            </div>
+                                            <div class="col-12">
+                                              <label for="inputAddress1" class="form-label">Address 1</label>
+                                              <input name ="Addressline1"  value="{{address.addressline1}}" type="text" class="form-control" id="inputAddress1" placeholder=" street name, and locality" required>
+                                            </div>
+                                            <div class="col-12">
+                                              <label for="inputAddress2" class="form-label">Address 2</label>
+                                              <input name="Addressline2"  value="{{address.addressline2}}" type="text"  class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor"  required>
+                                            </div>
+                                            <div class="col-md-6">
+                                              <label for="inputCity" class="form-label">City</label>
+                                              <input name="City"  value="{{address.city}}" type="text" class="form-control" id="inputCity"  required>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="inputState" class="form-label">State</label>
+                                                <select name="State" id="inputState" class="form-select" required>
+                                                  <option value="">Choose...</option>
+                                                  
+                                                
+                                                    {% for state in states %}
+                                                    
+                                                  
+                                                    <option value = "{{state.id}}" {% if address.state_id == state.id%} selected {% endif %}>{{ state.name }}</option>
+                                                  
+                                                  {% endfor %}
+                                                 
+                                                </select>
+                                              </div>
+                                             
+                                        
+                                            <div class="col-md-4">
+                                                <label for="inputCountry" class="form-label">Country</label>
+                                                <select name="Country" id="inputCountry" class="form-select"  required>
+                                                  <option value="">Choose...</option>
+                                                  
+                                                    
+                                                        {% for country in countries %}
+                                                            <option value = "{{country.id}}" {% if address.country_id == country.id%} selected {% endif %}>{{ country.name }}</option>
+                                                        {% endfor %}
+                                                        
+                                              
+                                                </select>
+                                              </div>
+                                        
+                                            <div class="col-md-2">
+                                              <label for="inputPin" class="form-label">PIN</label>
+                                              <input name="pin"  value="{{address.pin}}" type="text" class="form-control" id="inputPin"  required >
+                                            </div>
+                                            
+                                            
+                                            
+                                        {% comment %}  {% endcomment %}
+                                    </div>
+
+                                    <div class="modal-footer">
+                                       
+
+                                        <input type="button" class="btn btn-default" data-dismiss="modal"
+                                            value="Close">
+
+                                        <input type="submit" class="btn btn-success" value="update">
+                                    </div>
+                                </form>
+
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+
+{% comment %} edit done {% endcomment %}
+
+{% comment %} delete address {% endcomment %}
+
+{% for address in addresses%}
+                <div class="modal fade" id="deleteaddressModal-{{address.id}}" tabindex="-1" role="dialog"
+                    aria-labelledby="deleteaddressModal-{{address.id}}" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <form>
+                               {% csrf_token%}
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteaddressModal-{{address.id}}">Detele product</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete <span style="color:red">{{ address.first_name }}</span>
+                                this product?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                
+                                <a href="{% url 'delete_address' id=address.id %}" type="submit" class="btn btn-dark">Delete</a>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+{% comment %} done here {% endcomment %}
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    </div>
+
+{% endblock %}

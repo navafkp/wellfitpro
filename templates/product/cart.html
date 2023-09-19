@@ -1,0 +1,311 @@
+{% extends 'product/base.html' %}
+{% block content %}
+
+
+<main class="container">
+  <!-- HERO SECTION-->
+  <section class=" bg-light">
+    <div class="container">
+      <div class="row px-4 px-lg-5 py-lg-4 align-items-center">
+        <div class="col-lg-6">
+          <h1 class="h2 text-uppercase mb-0">Cart</h1>
+        </div>
+        <div class="col-lg-6 text-lg-end">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb justify-content-lg-end mb-0 px-0 bg-light">
+              <li class="breadcrumb-item"><a class="text-dark" href="index.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Cart</li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="py-5">
+    <h2 class="h5 text-uppercase mb-4">Shopping cart</h2>
+    <div class="row">
+      <div class="col-lg-8 mb-4 mb-lg-0">
+        <!-- CART TABLE-->
+        <div class="table-responsive mb-4">
+          <table class="table text-nowrap">
+            <thead class="bg-light">
+              <tr>
+                <th class="border-0 p-3" scope="col"> <strong class="text-sm text-uppercase">Product</strong></th>
+                <th class="border-0 p-3" scope="col"> <strong class="text-sm text-uppercase">Price</strong></th>
+                <th class="border-0 p-3" scope="col"> <strong class="text-sm text-uppercase">Quantity</strong></th>
+                <th class="border-0 p-3" scope="col"> <strong class="text-sm text-uppercase">Total</strong></th>
+                <th class="border-0 p-3" scope="col"> <strong class="text-sm text-uppercase"></strong></th>
+              </tr>
+            </thead>
+            <tbody class="border-0">
+
+              {% if messages %}
+
+              {% for message in messages %}
+              <p style="color:red;">{{message}}</p>
+              {% endfor %}
+
+              {% endif %}
+
+
+              {% for i in cart_items %}
+              <tr>
+                <th class="ps-0 py-3 border-light" scope="row">
+                  <div class="d-flex align-items-center"><a class="reset-anchor d-block animsition-link"
+                      href="{% url 'productdetail' %}?prodct={{i.product.slug}}"><img src="{{i.img}}"
+                        alt="{{i.product.name}}" width="70" /></a>
+                    <div class="ms-3"><strong class="h6"><a style="font-size: 10px;"
+                          class="reset-anchor animsition-link"
+                          href="{% url 'productdetail' %}?prodct={{i.product.slug}}"> {{i.product.name}}</a></strong>
+                    </div>
+                  </div>
+                </th>
+                <td class="p-3 align-middle border-light">
+                  {% if data %}
+                  {% for offer in data %}
+                  {% if offer.id == i.product.id %}
+
+                  <p class="mb-0 small">{{offer.product_price_withoffer}}</p>
+
+                  {% endif %}
+
+                  {% endfor %}
+
+
+                  {% else %}
+                  <p class="mb-0 small">{{i.product.sale_price}}</p>
+                  {% endif %}
+                </td>
+
+
+                <td class="p-3 align-middle border-light">
+                  <div class="quantity">
+                    <button class="decr-btn p-0" data-product-id="{{ i.product.id }}"><i class="fa fa-minus"></i></button>
+                    <input class="form-control form-control-sm border-0 shadow-0 p-0 quantity-input" min="1"
+                      type="text" value="{{ i.qty|default_if_none:0 }}" data-product-id="{{ i.product.id }}" />
+                    <button class="incr-btn p-0" data-product-id="{{ i.product.id }}"><i class="fa fa-plus"></i></button>
+                  </div>
+                </td>
+
+
+
+
+                {% if data %}
+                {% for offer in data %}
+                {% if offer.id == i.product.id %}
+
+                <td class="p-3 align-middle border-light cart-item-price" data-product-id="{{ i.product.id }}" data-price={{ offer.product_price_withoffer }}>
+
+                {% endif %}
+
+                {% endfor %}
+
+
+                {% else %}
+                <td class="p-3 align-middle border-light cart-item-price" data-product-id="{{ i.product.id }}" data-price={{ i.product.sale_price }}>
+                {% endif %}
+              
+                  {% if i.qty|default_if_none:0 == 0 %} {{i.product.sale_price}} {% else %} {{ i.total_price }} {% endif %}
+                </td>
+                <td class="p-3 align-middle border-light">
+
+                  <a class="reset-anchor" href="{% url 'cart'%}?cartdel={{i.product.id}}">
+                    <i class="fas fa-trash-alt small text-muted"></i>
+                  </a>
+                </td>
+
+
+              </tr>
+              {% endfor %}
+
+            </tbody>
+
+
+          </table>
+
+
+        </div>
+
+        <!-- CART NAV-->
+
+        <div class="bg-light px-4 py-3">
+          <div class="row align-items-center text-center">
+            <div class="col-md-6 mb-3 mb-md-0 text-md-start"><a class="btn btn-link p-0 text-dark btn-sm"
+                href="{% url 'shop' %}"><i class="fas fa-long-arrow-alt-left me-2"> </i>Continue shopping</a></div>
+
+
+            {% if cart_total %}
+            <div class="col-md-6 text-md-end "><a style="background-color: #374FCA" class="btn text-white btn-sm"
+                href="{% if 'next_url' in request.session %} {% url 'check_out' %} {% else %} {% url 'login' %}?next=check_out {% endif %}">Procceed
+                to checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></a></div>
+            {% endif %}
+
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ORDER TOTAL-->
+
+      <div class="col-lg-4">
+        <div class="card border-0 rounded-0 p-lg-4 bg-light">
+          <div class="card-body">
+            <h5 class="text-uppercase mb-4">Cart total</h5>
+            {% if cart_total %}
+            <ul id="order-sum-list">
+              {% for key, value in request.session.order_sum.items %}
+              {% if value != 0 or value != 0.0 %}
+              <li class="d-flex align-items-center justify-content-between cart-total-update">
+                <strong class="text-uppercase small font-weight-bold " data-key={{key}}>{{ key }}</strong>
+                <span class="text-muted small fw-bold" data-value={{value}}>{{ value }}</span>
+              </li>
+              <br>
+
+              {% endif %}
+              {% endfor %}
+            </ul>
+            {% endif %}
+
+            </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+{% block scripts %}
+<script>
+  $(document).ready(function () {
+    $(document).on("change", ".quantity-input", function (event) {
+      event.preventDefault();
+      
+      var product_id = $(this).data("product-id");
+      var new_quantity = $(this).val();
+
+      $.ajax({
+        type: "POST",
+        url: '/update-cart-quantity',
+        data: {
+          csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+          product_id: product_id,
+          new_quantity: new_quantity
+        },
+        dataType: "json",
+        success: function (data) {
+          if (data.message) {
+            
+            // Update the cart total or any other UI elements as needed
+            console.log(data.message);
+          }
+        },
+        error: function (xhr, textStatus, errorThrown) {
+          console.error("Error: " + errorThrown);
+        }
+      });
+    });
+
+    $(document).on("click", ".incr-btn", async function (event) {
+      event.preventDefault();
+      
+      var product_id = $(this).data("product-id"); // Get the product ID from the button's data attribute
+      var inputElement = $(this).closest(".quantity").find(".quantity-input"); // Find the related input element
+      var new_quantity = parseInt(inputElement.val()) + 1; // Increment the quantity by 1
+     
+      // Update the input field with the new quantity
+      inputElement.val(new_quantity);
+      
+      // Send the updated quantity to the server
+      await updateQuantity(product_id, new_quantity);
+      updateTotal(product_id, new_quantity);
+      cartTotalupdate();
+      
+      
+    
+    });
+
+    // Event handler for the "Decrease" button
+    $(document).on("click", ".decr-btn",  function (event) {
+      event.preventDefault();
+      
+      var product_id = $(this).data("product-id");
+      var inputElement = $(this).closest(".quantity").find(".quantity-input");
+      var new_quantity = parseInt(inputElement.val()) - 1; // Decrease the quantity
+
+      // Ensure the quantity doesn't go below 1
+      new_quantity = Math.max(new_quantity, 1);
+      // Update the input field with the new quantity
+      inputElement.val(new_quantity);
+      console.log(new_quantity)
+      // Send the updated quantity to the server
+       updateQuantity(product_id, new_quantity);
+       updateTotal(product_id, new_quantity);
+      cartTotalupdate();
+      
+    });
+
+    function updateQuantity(product_id, new_quantity) {
+      // Perform AJAX request to update the quantity on the server
+
+      $.ajax({
+
+        type: "POST",
+        url: '/update-cart-quantity',
+        data: {
+          csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+          product_id: product_id,
+          new_quantity: new_quantity,
+
+        },
+        dataType: "json",
+        
+        success: function (data) {
+          cartTotalupdate(data);
+
+        },
+        error: function (xhr, textStatus, errorThrown) {
+          console.error("Error: " + errorThrown);
+        }
+      });
+
+    }
+
+    function updateTotal(product_id, new_quantity){
+      $('.cart-item-price').each(function() {
+        var productIdValue = $(this).attr("data-product-id");
+        if(productIdValue == product_id){
+          let price = $(this).attr("data-price");
+          let updatedPrice = price * new_quantity;
+          $(this).html(updatedPrice)
+        }
+        
+      });
+      }
+    
+      function cartTotalupdate(data){
+
+        var orderSumList = $('#order-sum-list');
+        // Clear any existing list items
+        orderSumList.empty();
+        // Loop through the order_sum object and create list items
+        let newHtml = '';
+        for (var key in data) {
+            if (data.hasOwnProperty(key) && data[key]!=0 ) {
+                newHtml += '<li class="d-flex align-items-center justify-content-between cart-total-update"><strong class="text-uppercase small font-weight-bold">'+key+'</strong><span class="text-muted small fw-bold">'+data[key]+'</span></li><br>'
+            }
+        } 
+        $('#order-sum-list').html(newHtml)    
+      }
+    
+
+  });
+
+</script>
+{% endblock %}
+
+
+
+
+{% endblock %}

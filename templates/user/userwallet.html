@@ -1,0 +1,236 @@
+{% extends 'user/base.html' %}
+{% block content %}
+
+
+<!--  Sales Start -->
+
+<div class="container-fluid pt-4 px-4">
+    <div style="width:100%" class="bg-secondary text-center rounded p-4 ">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0">Wallet Balance: {{total}} {% if total %} <a class="btn btn-outline-success"
+                    href="{% url 'shop' %}"> Shop</a> <a class="btn btn-outline-success" href="" data-toggle="modal"
+                    data-target="#redeemModal"> Redeem</a>{% endif %}</h6>
+
+
+            {% comment %} {% endcomment %}
+            <div class="modal fade" id="redeemModal" tabindex="-1" role="dialog" aria-labelledby="redeemModal"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <form>
+                            {% csrf_token%}
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="redeemModal">Wallet Redeem</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                To redeem the wallet balance to your bank account, please send an email to <span
+                                    style="color:blue; font-size:14px;">customercare@fitpro.com</span><br><span
+                                    style="color:red; font-size:10px;">Please send email from your registered
+                                    email!</span><br>Also,you can call to <span style="color:blue; font-size:16px;">
+                                    +918127889767 </span>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            {% comment %} {% endcomment %}
+
+        </div>
+
+        {% comment %} {% endcomment %}
+        <div style="font-size: 8px;" class="table-responsive">
+            <table class="table text-start align-middle table-bordered table-hover mb-0">
+                <thead>
+                    <tr style="font-size: 8px;" class="text-dark">
+
+                        <th scope="col">Order ID</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Created_at</th>
+                        <th scope="col">Credited/Debited</th>
+
+
+                    </tr>
+                </thead>
+                <tbody style="font-size: 8px;">
+                    {% for i in wallet %}
+                    <tr>
+
+                        <td> {{i.order.id}} </td>
+                        <td> {{i.amount}} </td>
+                        <td> {{i.created_at}} </td>
+                        <td> {% if i.is_credit %} Credited {% else %} Debited {% endif %}</td>
+
+
+
+
+
+
+
+
+                    </tr>
+                    {% endfor %}
+                    {% comment %} {% endfor %} {% endcomment %}
+                </tbody>
+            </table>
+        </div>
+
+
+
+
+
+        {% comment %} {% endcomment %}
+
+
+
+
+    </div>
+
+
+</div>
+
+
+
+
+<!-- Footer Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-secondary rounded-top p-4">
+        <div class="row">
+            <div class="col-12 col-sm-6 text-center text-sm-start">
+                &copy; <a href="#">FitPro</a>, All Right Reserved.
+            </div>
+            <div class="col-12 col-sm-6 text-center text-sm-end">
+                <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                Designed By <a href="">FitPro</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer End -->
+
+<!-- Content End -->
+
+
+{% comment %} add address {% endcomment %}
+
+<div class="modal fade" id="addaddressmodal" tabindex="-1" aria-labelledby="addaddressmodalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="addaddressmodalLabel">Add Address</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form action="{% url 'user_profile' %}" enctype="multipart/form-data" method="post">
+
+                    {% csrf_token %}
+
+
+                    <div class="modal-body">
+                        {% comment %} {% endcomment %}
+
+                        <div class="col-md-6">
+                            <label for="inputFirstname" class="form-label">First name</label>
+                            <input name="First_name" type="text" class="form-control" id="inputFirstname" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="inputLastname" class="form-label">Last name</label>
+                            <input name="Last_name" type="text" class="form-control" id="inputLastname" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="inputEmail" class="form-label">Email</label>
+                            <input name="Email" type="email" placeholder="fitpto@gmail.com" class="form-control"
+                                id="inputEmail" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="inputPhone" class="form-label">Phone Number</label>
+                            <input name="Phone_number" placeholder="+918129777880" type="text" class="form-control"
+                                id="inputPhone" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="inputAddress1" class="form-label">Address 1</label>
+                            <input name="Addressline1" type="text" class="form-control" id="inputAddress1"
+                                placeholder=" street name, and locality" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="inputAddress2" class="form-label">Address 2</label>
+                            <input name="Addressline2" type="text" class="form-control" id="inputAddress2"
+                                placeholder="Apartment, studio, or floor" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputCity" class="form-label">City</label>
+                            <input name="City" type="text" class="form-control" id="inputCity" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="inputState" class="form-label">State</label>
+                            <select name="State" id="inputState" class="form-select" required>
+                                <option value="">Choose...</option>
+
+
+                                {% for state in states %}
+
+
+                                <option value="{{state.id}}">{{ state.name }}</option>
+
+                                {% endfor %}
+
+                            </select>
+                        </div>
+
+
+                        <div class="col-md-4">
+                            <label for="inputCountry" class="form-label">Country</label>
+                            <select name="Country" id="inputCountry" class="form-select" required>
+                                <option value="">Choose...</option>
+
+
+                                {% for country in countries %}
+                                <option value="{{country.id}}">{{ country.name }}</option>
+                                {% endfor %}
+
+
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label for="inputPin" class="form-label">PIN</label>
+                            <input name="pin" type="text" class="form-control" id="inputPin" required>
+                        </div>
+
+
+
+
+
+
+                        {% comment %} {% endcomment %}
+                    </div>
+
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-bs-dismiss="modal" value="Cancel">
+                        <input type="submit" class="btn btn-success" value="Add">
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+{% endblock %}

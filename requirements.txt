@@ -1,0 +1,5 @@
+django-tinymce
+six
+pillow
+
+python -m pip install django-twilio

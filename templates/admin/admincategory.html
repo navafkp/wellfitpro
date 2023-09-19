@@ -1,0 +1,238 @@
+{% extends 'admin/base.html' %}
+{% block content %}
+<!--  Sales Start -->
+<div class="container-fluid pt-4 px-4">
+
+
+    <div class="bg-secondary text-center rounded my-4 p-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0">Categories</h6>
+
+            <form action="{% url 'all_category' %}" method="get" role="search">
+                <input type="search" placeholder="Search Category" name="search_category">
+                <button class="btn-primary searchbtn" type="submit">Search</button>
+            </form>
+
+
+
+            <form class="d-none d-md-flex mb-3 ">
+
+                <select class="form-select form-select-xs " style="width: max-content;" name="filter_category"
+                    onchange="this.form.submit()">
+                    <option value="sort by">Sort by</option>
+                    <option value="name">Name</option>
+                    <option value="featured">Featured</option>
+                </select>
+            </form>
+
+
+        </div>
+        {% comment %} add category button {% endcomment %}
+        <div style="text-align:end; margin-right:2%; margin-bottom:1%;">
+            <a href="#addcategoryModal" class="btn-success w-auto me-2 btn" data-toggle="modal"><span>Add
+                    category</span></a>
+        </div>
+
+    </div>
+
+    {% for message in messages %}
+    <span style="color:red;">{{ message }}</span>
+    {% endfor %}
+
+    <div class="table-responsive">
+        <table class="table text-start align-middle table-bordered table-hover mb-0">
+            <thead>
+                <tr class="text-dark">
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Category image</th>
+
+                    <th scope="col">Featured</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in ctgy %}
+                <tr>
+                    <td>{{category.id}}</td>
+                    <td>{{category.name}}</td>
+                    <td>
+                        {% if category.image %}
+                        <img src="{{ category.image.url }}" alt="{{ category.name }}" style="max-height: 100px;">
+                        {% else %}
+                        No image available
+                        {% endif %}
+                    </td>
+
+
+                    <td>
+                        {{category.is_featured}}
+                    </td>
+
+
+
+                    <td>
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target="#editcategoryModal-{{category.id}}">
+                            Edit
+                        </button>
+                    </td>
+
+
+                    <td>
+                        <button type="button" class="btn btn-danger" data-toggle="modal"
+                            data-target="#deletecategoryModal-{{category.id}}">
+                            Delete
+                        </button>
+                    </td>
+
+
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+{% comment %} {% endcomment %}
+
+
+<div id="addcategoryModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{% url 'add-category' %}" enctype="multipart/form-data" method="post">
+
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Category</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+
+                <div class="modal-body">
+
+
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input name="name" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Image</label>
+                        <input name="image" type="file" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>is_featured</label>
+                        <input name="is_featured" type="checkbox">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                    <input type="submit" class="btn btn-success" value="Add">
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+{% comment %} {% endcomment %}
+{% for category in ctgy %}
+<div class="modal fade" id="editcategoryModal-{{category.id}}" tabindex="-1" role="dialog"
+    aria-labelledby="editcategoryModalLabel-{{category.id}}" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editcategoryModalLabel-{{category.id}}">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form action="{% url 'update-category'  id=category.id%}" enctype="multipart/form-data" method="post">
+
+                    {% csrf_token %}
+
+
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input name="name" value="{{ category.name }}" type="text" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Current Image</label>
+                            <img src="/media/{{ category.image }}" alt="{{ category.name }}" style="max-height: 100px;"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>New Image (optional)</label>
+                            <input name="new_image" type="file" class="form-control">
+                        </div>
+
+
+                        <div class="form-group">
+                            <label>is_featured</label>
+                            <input name="is_featured" {% if category.is_featured %} checked {% endif %} type="checkbox">
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Close">
+                        <input type="submit" class="btn btn-success" value="Update">
+                    </div>
+                </form>
+
+            </div>
+            {% comment %} <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div> {% endcomment %}
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% comment %} delete product {% endcomment %}
+
+{% for category in ctgy %}
+<div class="modal fade" id="deletecategoryModal-{{category.id}}" tabindex="-1" role="dialog"
+    aria-labelledby="deletecategoryModal-{{category.id}}" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deletecategoryModal-{{category.id}}">Delete category</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Once you delete the category, all the products related to the category - <span
+                        style="color: red">{{category.name}} </span> will be removed from product list <span
+                        style="color: red">!!</span> Are you sure you want to delete <span style="color: red">{{
+                        category.name }}</span>?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <a href="{% url 'delete-category' id=category.id %}" type="submit" class="btn btn-dark">Delete</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+
+
+
+{% endblock %}

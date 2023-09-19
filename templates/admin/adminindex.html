@@ -1,0 +1,148 @@
+{% extends 'admin/base.html' %}
+{% block content %}
+
+            <!-- Sale & Revenue Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-sm-6 col-xl-4">
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                            <i class="fa fa-chart-line fa-3x text-primary"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">Today Sale</p>
+                                <h6 class="mb-0">RS {{today_total}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                            <i class="fa fa-chart-bar fa-3x text-primary"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">Total Sale</p>
+                                <h6 class="mb-0">RS {{total_sale}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    {% comment %} <div class="col-sm-6 col-xl-3">
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                            <i class="fa fa-chart-area fa-3x text-primary"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">Today Revenue</p>
+                                <h6 class="mb-0">RS 1234</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                            <i class="fa fa-chart-pie fa-3x text-primary"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">Total Revenue</p>
+                                <h6 class="mb-0">RS 25000</h6>
+                            </div>
+                        </div>
+                    </div> {% endcomment %}
+
+                    <div  class="col-sm-6 col-xl-4">
+                        <a style="margin-top: 32px;margin-left: 48px;" class="btn btn-primary" href="{% url 'admin_sales_report' %}">Download Sales Report </a>
+                    </div> 
+                </div>
+                
+            </div>
+            <!-- Sale & Revenue End -->
+
+
+            <!-- Sales Chart Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    {% comment %} <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary text-center rounded p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h6 class="mb-0">Yearly Sales</h6>
+                                <a href="">Show All</a>
+                            </div>
+                            <canvas id="bar-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary text-center rounded p-4">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h6 class="mb-0">Salse & Revenue</h6>
+                                <a href="#">Show All</a>
+                            </div>
+                            <canvas id="salse-revenue"></canvas>
+                        </div>
+                    </div> {% endcomment %}
+
+
+                    
+                </div>
+               
+            </div>
+            <!-- Sales Chart End -->
+
+
+            <!-- Recent Sales Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-secondary text-center rounded p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h6 class="mb-0">Recent Order</h6>
+                        {% comment %} <a href="#">Show All</a> {% endcomment %}
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table text-start align-middle table-bordered table-hover mb-0">
+                            <thead>
+                                <tr class="text-black">
+                                    
+                                    <th scope="col">Order ID</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Status</th>
+                                   
+                                    <th scope="col">Total</th>
+                                   
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in order_info %}
+                                <tr>
+
+                                    <td>{{order.order_id}}</td>
+                                    <td>{{order.date}}</td>
+                                   
+
+                                    <td>
+                                        <form action = "{% url 'admin_order'%}" method='get'>
+                                            {% comment %} <select name="myselect" id="myselect" onchange="this.form.submit()"> {% endcomment %}
+                                                {% csrf_token %}
+                                            
+                                              <select value = "{{ order.status}}" name="chnageorder" id="chnageorder" onchange="this.form.submit()" >
+                                                {% comment %} <option value="" >Status</option> {% endcomment %}
+                                                <option value="1{{order.order_id}}" {% if order.status == 1 %} selected {% endif %} >Order Initiated</option>
+                                                <option value="2{{order.order_id}}" {% if order.status == 2 %} selected {% endif %} >Order Processing</option>
+                                                <option value="3{{order.order_id}}" {% if order.status == 3 %} selected {% endif %} >Shipped</option>
+                                                <option value="4{{order.order_id}}" {% if order.status == 4 %} selected {% endif %}>Delivered</option>
+                                                <option value="4{{order.order_id}}" {% if order.status == 5 %} selected {% endif %}>Cancelled</option>
+                                            
+                                            </select>
+                                            {% comment %} {% if x is None %} selected {% endif %} {% endcomment %}
+                    
+                                          </form>
+                                    </td>
+
+
+                                    <td>{{order.total}}</td>
+                                  
+                                    <td>
+                                        <a class="btn btn-sm btn-primary" href="{% url 'admin_order_detail_page' id=order.order_id %}">
+                                            View</a></td>
+                              
+                                </tr>
+                                {% endfor %}
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                
+            <!-- Recent Sales End -->
+
+{% endblock %}

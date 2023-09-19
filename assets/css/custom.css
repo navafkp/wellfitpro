@@ -1,0 +1,32 @@
+/* your styles go here */
+
+
+
+/*  */
+.abc{
+    position: relative;
+   
+}
+
+.abs {
+    position: absolute;
+    left: -2px;
+    top: 40%;
+}
+
+
+.abm {
+    position: absolute;
+    left: -2px;
+    top: 50%;
+}
+
+.btnrelation{
+    position: absolute;
+    left: -2px;
+    top: 60%;
+    background-color:  #555555;
+    color: white;
+    
+
+}

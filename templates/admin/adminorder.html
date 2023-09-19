@@ -1,0 +1,92 @@
+{% extends 'admin/base.html' %}
+{% block content %}
+            <!-- Navbar End -->
+
+
+            <!--  Sales Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-secondary text-center rounded p-4">
+                    <div style="justify-content: space-between;"class="d-flex  mb-4">
+                        <h6 class="mb-0">Recent Order</h6>
+
+                        <form style = " width:max-content; color: black" role="search" action = "{% url 'admin_order' %}" method = 'get'>
+                            {% csrf_token %}
+                            <input  type="search" placeholder="search order"  name = "order" aria-label="Search">
+                            <button class=" btn-primary searchbtn" type="submit" >Search </button>
+                          </form>
+
+
+
+                        <form class="d-none d-md-flex mb-3 " action="{% url 'admin_order' %}" method="get">
+                           
+                            <select class="form-select form-select-xs " name="filter_order" id="filter_order" style="width: max-content;" onchange="this.form.submit()">
+                                <option value="Sort By">Sort by</option>
+                                <option value="Status">Status</option>
+                                <option value="ID" >ID</option>
+                            </select>
+                        </form> 
+
+                    
+
+                    </div>
+                   
+                   
+                    <div class="table-responsive">
+                        <table class="table text-start align-middle table-bordered table-hover mb-0">
+                            <thead>
+                                <tr class="text-black">
+                                    <th scope="col">Order ID</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Total</th>
+                                   
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in order_info %}
+                                <tr>
+                                    <td>{{item.order_id}}</td>
+                                    <td>{{item.date}}</td>
+                                    {% comment %} <td>{{item.status}}</td> {% endcomment %}
+                                    <td>
+                                        <form action = "{% url 'admin_order'%}" method='get'>
+                                            {% comment %} <select name="myselect" id="myselect" onchange="this.form.submit()"> {% endcomment %}
+                                                {% csrf_token %}
+                                            
+                                              <select value = "{{ item.status}}" name="chnageorder" id="chnageorder" onchange="this.form.submit()" >
+                                                {% comment %} <option value="" >Status</option> {% endcomment %}
+                                                <option value="1{{item.order_id}}" {% if item.status == 1 %} selected {% endif %} >Order Initiated</option>
+                                                <option value="2{{item.order_id}}" {% if item.status == 2 %} selected {% endif %} >Order Processing</option>
+                                                <option value="3{{item.order_id}}" {% if item.status == 3 %} selected {% endif %} >Shipped</option>
+                                                <option value="4{{item.order_id}}" {% if item.status == 4 %} selected {% endif %}>Delivered</option>
+                                                <option value="4{{item.order_id}}" {% if item.status == 5 %} selected {% endif %}>Cancelled</option>
+                                            
+                                            </select>
+                                            {% comment %} {% if x is None %} selected {% endif %} {% endcomment %}
+                    
+                                          </form>
+                                    </td>
+                                    <td>{{item.total}}</td>
+
+                                    
+                                  
+                                    
+
+
+                                    <td>
+                                        <a class="btn btn-sm btn-primary" href="{% url 'admin_order_detail_page' id=item.order_id %}">
+                                            View</a></td>
+
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+             
+            <!--  Sales End -->
+
+
+   
+
+{% endblock %}

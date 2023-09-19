@@ -1,0 +1,142 @@
+{% extends 'product/base.html' %}
+{% block content %}
+
+
+<main class="container">
+    <!-- HERO SECTION-->
+    <section class=" bg-light">
+        <div class="container">
+            <div class="row px-4 px-lg-5 py-lg-4 align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="h2 text-uppercase mb-0">Cart</h1>
+                </div>
+                <div class="col-lg-6 text-lg-end">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-lg-end mb-0 px-0 bg-light">
+                            <li class="breadcrumb-item"><a class="text-dark" href="{% url 'home' %}">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">checkout</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-5">
+        <h2 class="h5 text-uppercase mb-4">Choose Payment Mode</h2>
+        <div class="row" >
+            <div class="col-lg-8">
+                
+                {% for message in messages%}
+                <p class="mb-0 text-center text-danger"> {{message}} </p>
+                {%endfor%}
+            
+
+                <form action="{% url 'order_placed' %}" method='GET' >
+                    {% csrf_token %}
+
+                  <button type="submit" name="cash" value="cash">Cash on Delivery</button>
+                 
+    
+                  </form>
+
+
+                  
+
+                <form action="{% url 'order_placed' %}" method="post">
+                    {% csrf_token %}
+                   
+                    <button type="submit" id="rzp-button1" name="online" value="online">Pay Online</button>
+                </form> 
+      
+
+                <form action="{% url 'order_placed' %}" method='get' >
+                    {% csrf_token %}
+
+                  <button type="submit" name="wallet" value="wallet">Wallet</button>
+                 
+    
+                  </form>
+           
+            </div>
+            <!-- ORDER TOTAL-->
+            
+        </div>
+    </section>
+
+    {% block scripts %}
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    
+    <script>
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== "") {
+                var cookies = document.cookie.split(";");
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === name + "=") {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    
+        var options = {
+            "key": "rzp_test_w75qTKqoI23D5G",
+            "amount": {{payment.amount}}, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "FitPro",
+            "description": "Purchase transaction",
+            "image": "https://example.com/your_logo",
+            "order_id": "{{ payment.id }}", // Embed the value properly using double curly braces
+            "handler": function (response) {
+                // Send the payment details to your Django server using an AJAX request
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'save_payment' %}",
+                    data: {
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_signature: response.razorpay_signature,
+                    },
+                    headers: {
+                        "X-CSRFToken": getCookie("csrftoken") // Get the CSRF token from cookies
+                    },
+                    success: function (data) {
+                        // Handle the success response if needed
+                        console.log(data);
+                        window.location.href = "{% url 'success' %}";
+                    },
+                    error: function () {
+                        // Handle the error response if needed
+                    }
+                });
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+    
+        var rzp1 = new Razorpay(options);
+        rzp1.on('payment.failed', function (response) {
+            alert(response.error.code);
+            alert(response.error.description);
+            alert(response.error.source);
+            alert(response.error.step);
+            alert(response.error.reason);
+            alert(response.error.metadata.order_id);
+            alert(response.error.metadata.payment_id);
+        });
+    
+        document.getElementById('rzp-button1').onclick = function (e) {
+            console.log('Button clicked');
+            rzp1.open();
+            e.preventDefault();
+        }
+    </script>
+    {% endblock scripts %}
+    
+
+</main>
+{% endblock %}

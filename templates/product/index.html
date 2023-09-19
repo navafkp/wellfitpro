@@ -1,0 +1,339 @@
+{% extends 'product/base.html' %}
+
+{% load static %}
+{% block content %}
+
+<!--  Modal -->
+{%for product in pdt %}
+<div class="modal fade" id="productView-{{product.id}}" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content overflow-hidden border-0">
+      <button class="btn-close p-4 position-absolute top-0 end-0 z-index-20 shadow-0" type="button" data-dismiss="modal"
+        aria-label="Close"></button>
+      <div class="modal-body p-0">
+        <div class="row align-items-stretch">
+          {% if product.productimage_set.all %}
+          <div class="col-lg-6 p-lg-0">
+
+            <a href="{% url 'productdetail' %}?prodct={{product.slug}}"
+              class=" product-view d-block h-100 bg-cover bg-center"
+              style="background: url('/media/{{product.productimage_set.first.image}}')">
+            </a>
+
+          </div>
+          {% endif %}
+
+
+          <div class="col-lg-6">
+            <div class="p-4 my-md-4">
+              <ul class="list-inline mb-2">
+                <li class="list-inline-item m-0"><i class="fas fa-star small text-warning"></i></li>
+                <li class="list-inline-item m-0 1"><i class="fas fa-star small text-warning"></i></li>
+                <li class="list-inline-item m-0 2"><i class="fas fa-star small text-warning"></i></li>
+                <li class="list-inline-item m-0 3"><i class="fas fa-star small text-warning"></i></li>
+                <li class="list-inline-item m-0 4"><i class="fas fa-star small text-warning"></i></li>
+              </ul>
+              <h2 class="h4">{{product.name}}</h2>
+              <p class="text-muted">{{product.price}}</p>
+              <p class="text-sm mb-4">{{product.short_description}}</p>
+
+              {% comment %} {% endcomment %}
+              <div class="product-container">
+                <!-- Add to cart button -->
+                <input type="hidden" class="product-id" value="{{product.id}}">
+
+                <div class="col-sm-3">
+
+                  <div class="input-group-append">
+                    <button data-product-id="{{ product.id }}"
+                      class="btn btn-dark btn-sm btn-block h-100 d-flex align-items-center justify-content-center px-0 addToCartBtn">Add
+                      to cart</button>
+                  </div>
+                </div>
+              </div>
+              <div class="product-container">
+                <!-- Add to cart button -->
+                <input type="hidden" class="product-id" value="{{product.id}}">
+                <button data-product-id="{{ product.id }}" class="  addTowishlistBtn"><i
+                    class="far fa-heart me-2"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endfor %}
+{% comment %} modal large end {% endcomment %}
+
+
+{% comment %} {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %} {% endcomment %}
+
+<!-- HERO SECTION-->
+<div class="container">
+  <section class="py-4">
+    <div class="container" style="background-color: #F4F5F9;">
+      <div class="row px-4 px-lg-5 ">
+        <div class="col-lg-6 abc ">
+          <p class="text-muted small abs text-uppercase mb-2">Is Fitness your GOAL</p>
+          <h1 class="h2 text-uppercase  abm mb-3">Make it easy with right accessories</h1>
+          <a class="btn ab mt-5 btnrelation" href="{% url 'shop' %}">Buy Now</a>
+        </div>
+
+
+        <div class="col-lg-6 ">
+          <img class="img-fluid " src="{% static 'img/pngwing.png' %}" alt="" />
+        </div>
+      </div>
+    </div>
+  </section>
+{% comment %} offer section {% endcomment %}
+
+<section class="pt-5">
+  <header class="text-center">
+
+    <h2 class="h5 text-uppercase mb-4">Offers</h2>
+  </header>
+
+
+
+  <div class="row">
+    {% for i in offers %}
+    <div class="col-md-4">
+      <a class="category-item" href="{% url 'shop' %}?offer={{i.id}}">
+        <img class="img-fluid" src="/media/{{i.category.image}}" alt="" />
+        <strong class="category-item-title">{{i.name}}</strong>
+      </a>
+    </div>
+  {% endfor %}
+  </div>
+
+
+
+</section>
+
+{% comment %}  {% endcomment %}
+
+  <!-- CATEGORIES SECTION-->
+  <section class="pt-5">
+    <header class="text-center">
+
+      <h2 class="h5 text-uppercase mb-4">Browse our categories</h2>
+    </header>
+
+
+
+    <div class="row">
+      {% for category in ctgy%}
+      <div class="col-md-4">
+        <a class="category-item" href="{% url 'shop' %}?cat={{category.id}}">
+          <img class="img-fluid" src="/media/{{category.image}}" alt="" />
+          <strong class="category-item-title">{{category.name}}</strong>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+
+
+
+
+    <div class="text-center mt-4 p-2" style=" background-color: #f8f9fa; width: 100%">
+
+      <a href="{% url 'category' %}" class="h5 text-uppercase  text-dark mb-4">View all categories</a>
+    </div>
+
+
+
+
+  </section>
+  <!-- TRENDING PRODUCTS-->
+  <section class="py-5">
+    <header style="justify-content: space-between;" class=" d-flex">
+      <div>
+        <h2 class="h5 text-uppercase mb-4">Our featured products</h2>
+      </div>
+      
+      {% comment %} <div>
+        <a style="background-color:#374FCA; color:white" class="btn rounded-pill "
+          href="{% url 'featuredDetail' id='featured' %}"> view more</a>
+      </div> {% endcomment %}
+
+      <form action="{% url 'shop' %}" method='get'>
+        {% csrf_token%}
+        <input type="submit" name="featured" value="view more">
+      </form>
+
+    </header>
+    <div class="row">
+      <!-- PRODUCT-->
+     
+      {% for i in pdt %}
+      
+      <div class="col-xl-3 col-lg-4 col-sm-6">
+        <div class="product text-center">
+          <div class="position-relative mb-3">
+
+            {% if i.productimage_set.all %}
+
+            <a href="{% url 'productdetail' %}?prodct={{i.slug}}"> <img class="img-fluid w-100"
+                src="/media/{{ i.productimage_set.first.image }}" alt="..."></a>
+            {% else %}
+            <!-- Handle case when no product image is available -->
+            <img class="img-fluid w-100" src="/media/default-image.jpg" alt="No Image">
+            {% endif %}
+
+            {% if offer_dispaly %}
+            {% for banner in offer_dispaly %} 
+            {% if i.id == banner.id %} 
+           
+            <div class="product-banner"> 
+              <div class="offer-overlay-indexpage">
+                  <p style="font-size:9px" class="offer-text m-0">{{banner.display}}</p>
+              </div>
+          </div>
+          {% endif %}
+          {% endfor  %}
+          {% endif %} 
+
+
+            <div class="product-overlay">
+              <ul class="mb-0 list-inline" style="display: inline-flex;}">
+                {% comment %} <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-outline-dark" href="#!"><i
+                      class="far fa-heart"></i></a></li> {% endcomment %}
+                <li>
+                  <div class="product-container">
+                    <input type="hidden" class="product-id" value="{{i.id}}">
+                    <button data-product-id="{{ i.id }}" class=" btn btn-sm btn-outline-dark list-inline-item mr-0 addTowishlistBtn"><i
+                        class="far fa-heart me-2"></i></button>
+                  </div>
+
+                </li>
+
+
+                <li>
+                  <div class="product-container">
+                    
+                    <!-- Add to cart button -->
+                    <input type="hidden" class="product-id" value="{{i.id}}">
+                    <button data-product-id="{{ i.id }}"
+                      class="btn btn-dark btn-sm btn-block h-100 d-flex align-items-center justify-content-center px-0 addToCartBtn">Add
+                      to cart</button>
+                  </div>
+                </li>
+
+                {% comment %} <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-dark" href="cart.html">Add
+                    to cart</a></li> {% endcomment %}
+                <li class="list-inline-item me-0"><a class="btn btn-sm btn-outline-dark" href="#productView"
+                    data-target="#productView-{{i.id}}" data-toggle="modal"><i class="fas fa-expand"></i></a></li>
+
+
+              </ul>
+            </div>
+          </div>
+          <h6> <a class="reset-anchor" href="detail.html">{{i.name}}</a></h6>
+          {% comment %} {% if i.sale_price != i.price %}
+          <div class="d-flex">
+          <p style="color:green!important;" class="small text-muted ms-4 px-4 fw-bold ">{{i.sale_price}}</p>
+          <p class="small text-muted"><del >{{i.price}}<del></p>
+          </div> {% endcomment %}
+           {% if data %}
+           {% for offer in data %}
+           {% if offer.id == i.id  and offer.product_price_withoffer != i.price %}
+           <div class="d-flex">
+           <p style="color:green!important;" class="small text-muted ms-4 px-4 fw-bold ">{{offer.product_price_withoffer}}</p>
+           <p class="small text-muted"><del >{{i.price}}<del></p>
+           </div>
+           {% elif offer.id == i.id  and offer.product_price_withoffer == i.price %}
+           <p style="color:black!important;" class="small text-muted ms-4 px-4 fw-bold ">{{i.sale_price}}</p>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        
+        
+        </div>
+      </div>
+      {% endfor %}
+
+      
+
+    </div>
+    
+  </section>
+  <!-- SERVICES-->
+  <section class="py-5 bg-light">
+    <div class="container">
+      <div class="row text-center gy-3">
+        <div class="col-lg-4">
+          <div class="d-inline-block">
+            <div class="d-flex align-items-end">
+              <svg class="svg-icon svg-icon-big svg-icon-light">
+                <use xlink:href="#delivery-time-1"> </use>
+              </svg>
+              <div class="text-start ms-3">
+                <h6 class="text-uppercase mb-1">Free shipping</h6>
+                <p class="text-sm mb-0 text-muted">Free shipping worldwide</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="d-inline-block">
+            <div class="d-flex align-items-end">
+              <svg class="svg-icon svg-icon-big svg-icon-light">
+                <use xlink:href="#helpline-24h-1"> </use>
+              </svg>
+              <div class="text-start ms-3">
+                <h6 class="text-uppercase mb-1">24 x 7 service</h6>
+                <p class="text-sm mb-0 text-muted">Free shipping worldwide</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="d-inline-block">
+            <div class="d-flex align-items-end">
+              <svg class="svg-icon svg-icon-big svg-icon-light">
+                <use xlink:href="#label-tag-1"> </use>
+              </svg>
+              <div class="text-start ms-3">
+                <h6 class="text-uppercase mb-1">Festivaloffers</h6>
+                <p class="text-sm mb-0 text-muted">Free shipping worldwide</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- NEWSLETTER-->
+  <section class="py-5">
+    <div class="container p-0">
+      <div class="row gy-3">
+        <div class="col-lg-6">
+          <h5 class="text-uppercase">Let's be friends!</h5>
+          <p class="text-sm text-muted mb-0">Nisi nisi tempor consequat laboris nisi.</p>
+        </div>
+        <div class="col-lg-6">
+          <form action="#">
+            <div class="input-group">
+              <input class="form-control form-control-lg" type="email" placeholder="Enter your email address"
+                aria-describedby="button-addon2">
+              <button class="btn btn-dark" id="button-addon2" type="submit">Subscribe</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+{% endblock %}
