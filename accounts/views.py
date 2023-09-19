@@ -214,8 +214,10 @@ def login_user(request):
         
     return render(request, 'user/signin.html')
 
-TWILIO_ACCOUNT_SID  = "AC04b32dbb86cd9ea4f2237d7fc45c45c6"
-TWILIO_AUTH_TOKEN = "0195155de276bf83da80ac9a88b0a64c"
+TWILIO_ACCOUNT_SID = config('TWILIO_ACCOUNT_SID', default='')
+TWILIO_AUTH_TOKEN = config('TWILIO_AUTH_TOKEN', default='')
+
+
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @never_cache
 def verify_signin(request):
