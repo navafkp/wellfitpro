@@ -811,6 +811,7 @@ def wishlist(request):
 @login_required(login_url='login')  # Use the URL of your login page here
 def check_out(request):
     b_address = [None]
+    
     country = Country.objects.all().order_by('name')
     state = State.objects.all().order_by('name')
     email = request.session.get('email', None)
@@ -819,7 +820,10 @@ def check_out(request):
     cart = Cart.objects.get(user=user_obj)
     cartitem = CartItem.objects.filter(cart=cart).select_related('product') 
     addresses = Address.objects.filter(Q(user=user_obj) & Q(is_deleted = False)).order_by('-id').select_related('state', 'country')
-    value = addresses[0] 
+    
+    if addresses:
+        value = addresses[0] 
+        
     category_offer_name_set = set()
     cart_item_total = []
     cart_total = 0
@@ -897,6 +901,7 @@ def check_out(request):
     request.session['order_sum']['discount'] = discount
     request.session['order_sum']['grant total'] = grant_total
     request.session.save()
+    print(value)
     context = {
         'countries':country,
         'states': state,
