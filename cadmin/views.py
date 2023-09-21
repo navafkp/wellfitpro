@@ -6,7 +6,9 @@ from django.contrib import messages
 from django.views.decorators.cache import cache_control, never_cache
 from product.models import FitProduct, Category, ProductImage, Order, OrderItem, Coupon, Wallet, Offer
 from accounts.models import Notifications
-from validate_email import validate_email
+'''from validate_email import validate_email'''
+from django.core.validators import validate_email
+'''from validate_email_address import validate_email'''
 import time
 from django.db.models.functions import Concat  
 from django.db.models import F, Value
@@ -14,6 +16,7 @@ from decimal import Decimal
 import csv
 from django.db.models import Q
 from datetime import datetime, date, timedelta
+from django.core.exceptions import ValidationError
 import datetime
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -31,14 +34,10 @@ def adminsignin(request):
             return redirect('adminsignin')
         email = email.strip()
         try:
-            is_valid = validate_email(email, verify=True)
-        except TimeoutError:
-            time.sleep(1)  # Wait for a short duration
-            try:
-                is_valid = validate_email(email, verify=True)
-            except TimeoutError:
-                is_valid = False      
-        if is_valid:
+            validate_email(email)
+        except ValidationError:
+               messages.info(request, "Please enter a valid email address")
+        else:
             admin = authenticate(request, email=email, password=password)
             if admin is not None:
                 if admin.is_staff:
@@ -50,9 +49,8 @@ def adminsignin(request):
                     return redirect('adminsignin')       
             else: 
                 messages.info(request, "Invalid username or password.")
-                return redirect('adminsignin') 
-        else:
-            messages.info(request, 'enter a valid email ID')
+                return redirect('adminsignin')
+
     return render(request, 'admin/adminsignin.html')
 
 def datetime_serializer(obj):

@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-=2dr&-d1^46*g*ogph&zoid5b%hdjh14!-ho(d7i-7xll4+9po
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -83,8 +83,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'fitpro',
-        'USER': 'postgres',
-        'PASSWORD': '1234',
+        'USER': 'wellfitcart',
+        'PASSWORD': '123',
         'HOST': 'localhost',
         'PORT': '5432'
     }
