@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.views.decorators.cache import cache_control, never_cache
 from product.models import FitProduct, Category, ProductImage, Order, OrderItem, Coupon, Wallet, Offer
-from accounts.models import Notifications
+from accounts.models import Notifications, State, Country
 # from validate_email import validate_email
 # from validate_email_address import validate_email
 from django.core.validators import validate_email
@@ -411,6 +411,68 @@ def download_filtered_sales(request):
         return response
     else:
         return HttpResponse('')
+
+
+def setup_country(request):
+    
+    countries = Country.objects.all().values()
+    states = State.objects.all().select_related('country')
+    
+    if request.method ==  'POST':
+        if 'add-country' in request.POST:
+            country = request.POST.get('name')
+            Country.objects.create(name=country)
+            
+    if request.method ==  'POST':
+        if 'add-state' in request.POST:
+            state = request.POST.get('name')
+            country = request.POST.get('country')
+            
+            country_obj = Country.objects.get(id=country)
+            State.objects.create(name=state, country=country_obj)
+            
+    print(states)
+    
+        
+    context = {
+       'countries':countries, 
+       'states':states,
+    }
+    return render(request, 'admin/stateandcountry.html', context)
+
+
+def update_country(request, id):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        country = Country.objects.get(id=id)
+        country.name = name
+        country.save()
+        return redirect('setup_country')
+    
+    
+def delete_country(request, id):
+    country = Country.objects.get(id=id)
+    country.delete()
+    return redirect('setup_country')
+    
+        
+def update_state(request, id):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        country = request.POST.get('country')
+        country_obj = Country.objects.get(id=country)
+        
+        state = State.objects.get(id=id)
+        state.name = name
+        state.country = country_obj
+        state.save()
+        return redirect('setup_country')
+    
+def delete_state(request, id):
+    state = State.objects.get(id=id)
+    state.delete()
+    return redirect('setup_country')
+
     
 def coupon(request):
     Coupons = []
@@ -620,3 +682,7 @@ def offer_delete(request, id):
     offer.is_deleted = True
     offer.save()
     return redirect('offers')
+
+
+
+    

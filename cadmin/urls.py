@@ -31,4 +31,15 @@ urlpatterns = [
     path('update-offer/<int:id>/', views.update_offer, name='update_offer'),
     path('offer-delete/<int:id>/', views.offer_delete, name='offer_delete'),
     path('activate-offer/<int:id>/', views.activate_offer, name='activateoffer'),
+    path('country/', views.setup_country, name='setup_country'),
+    path('update-country/<int:id>/', views.update_country, name='update_country'),
+    path('delete-country/<int:id>/', views.delete_country, name='delete_country'),
+    path('update-state/<int:id>/', views.update_state, name='update_state'),
+    path('delete-state/<int:id>/', views.delete_state, name='delete_state'),
+    
+    
+    
+    # path('setup-state/', views.setup_state, name='setup_state'),
+    
+
 ]
