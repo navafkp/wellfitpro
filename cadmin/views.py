@@ -689,9 +689,3 @@ def offer_delete(request, id):
     offer.save()
     return redirect('offers')
 
-
-
-
-
-    
-
