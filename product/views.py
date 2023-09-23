@@ -810,6 +810,7 @@ def wishlist(request):
                                            
 @login_required(login_url='login')  # Use the URL of your login page here
 def check_out(request):
+    value = None
     b_address = [None]
     
     country = Country.objects.all().order_by('name')
@@ -820,10 +821,12 @@ def check_out(request):
     cart = Cart.objects.get(user=user_obj)
     cartitem = CartItem.objects.filter(cart=cart).select_related('product') 
     addresses = Address.objects.filter(Q(user=user_obj) & Q(is_deleted = False)).order_by('-id').select_related('state', 'country')
+
     
     if addresses:
         value = addresses[0] 
         
+
     category_offer_name_set = set()
     cart_item_total = []
     cart_total = 0

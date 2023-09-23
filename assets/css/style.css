@@ -370,8 +370,7 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
     margin-bottom: 5px
 }
 
-.invoice-table {
-}
+
 
 .invoice-table .table-bordered td,.invoice-table .table-bordered th {
     border: 1px solid rgba(120,130,140,.13)!important;
@@ -406,3 +405,25 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
 .invoice-buttons a:hover {
     background: #574494
 }
+
+
+.form-control{
+    background-color: #fff;
+}
+
+
+.abc li {
+    padding-right: 58px;
+    margin-left: 22px;
+    list-style: none;
+}
+
+.abc ul {
+    display: flex;
+    padding-right: 5px;
+    margin-top: 15px;
+}
+
+
+
+

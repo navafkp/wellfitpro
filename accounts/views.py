@@ -10,6 +10,7 @@ from decouple import config
 import secrets
 import random
 from decimal import Decimal
+'''from validate_email_address import validate_email'''
 from django.core.validators import validate_email
 from twilio.rest import Client
 from twilio.base.exceptions import TwilioRestException
