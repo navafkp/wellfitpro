@@ -10,7 +10,7 @@ from accounts.models import Notifications, State, Country
 # from validate_email import validate_email
 # from validate_email_address import validate_email
 from django.core.validators import validate_email
-from dateutil import parser as date_parser
+
 import time
 from django.db.models.functions import Concat  
 from django.db.models import F, Value
@@ -387,27 +387,27 @@ def download_filtered_sales(request):
                 last_day_of_month = first_day_of_month.replace(year=first_day_of_month.year + 1, month=1, day=1) - timedelta(days=1)
             else:
                 last_day_of_month = first_day_of_month.replace(month=first_day_of_month.month + 1, day=1) - timedelta(days=1)
-            start_datetime = first_day_of_month
-            end_datetime = last_day_of_month   
+            start_date = first_day_of_month
+            end_date = last_day_of_month   
         elif value == 'last_month':
             current_date = date.today()
             first_day_of_month = current_date.replace(day=1)
             last_day_of_last_month = first_day_of_month - timedelta(days=1)
             first_day_of_last_month = last_day_of_last_month.replace(day=1)
-            start_datetime = first_day_of_last_month
-            end_datetime = last_day_of_last_month
+            start_date = first_day_of_last_month
+            end_date = last_day_of_last_month
         elif value == 'choose_date':
             start_date_str = request.GET.get('start_date')
             end_date_str = request.GET.get('end_date')   
             try:
-                start_datetime = date_parser.parse(start_date_str)
-                end_datetime = date_parser.parse(end_date_str)
+                start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
+                end_date = datetime.strptime(end_date_str, '%Y-%m-%d')
             except ValueError:
                 return HttpResponse("Invalid date format. Please use YYYY-MM-DD.")
         # Filter orders - date only
-        orders_in_date_range = Order.objects.filter(created_at__date__range=(start_datetime, end_datetime))
+        orders_in_date_range = Order.objects.filter(created_at__date__range=(start_date, end_date))
         response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = f'attachment; filename=allorders_{start_datetime}_{end_datetime}.csv'
+        response['Content-Disposition'] = f'attachment; filename=allorders_{start_date}_{end_date}.csv'
         # Create a CSV writer and write header row
         writer = csv.writer(response)
         writer.writerow(['user id', 'billing_email', 'billing_address1', 'billing_address2', 'discount', 'payment_method', 'total_amout', 'created_at'])   
