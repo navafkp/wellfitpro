@@ -100,7 +100,7 @@ def ahome(request):
     return render(request, 'admin/adminindex.html', context )
 
 def admin_sales_report(request):
-    return render(request, 'admin/adminsalesreport.html ')
+    return render(request, 'admin/adminsalesreport.html')
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @never_cache
