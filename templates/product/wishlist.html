@@ -48,6 +48,7 @@
               {% for product in wish_items_list %}
               <tr>
                 <th class="ps-0 py-3 border-light" scope="row">
+                  
                   <div class="d-flex align-items-center">
                     <a class="reset-anchor d-block animsition-link"
                       href="{% url 'productdetail' %}?prodct={{ product.product.name|slugify }}"><img
@@ -55,10 +56,11 @@
 
                     <div class="ms-3">
                       <strong class="h6"><a class="reset-anchor animsition-link"
-                          href="{% url 'productdetail' %}?prodct={{ product.product.name|slugify }}">{{
-                          product.product.name }}</a></strong>
+                          href="{% url 'productdetail' %}?prodct={{ product.product.name|slugify }}">
+                          {{ product.product.name }}</a></strong>
+                          
                     </div>
-                </th>
+                    </th>
 
 
                 <td class="p-3 align-middle border-light">
