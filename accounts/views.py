@@ -568,10 +568,7 @@ def order_detail_page(request, id):
     product_item = OrderItem.objects.filter(order_id=id)
    
     product_bucket = []
-    # data = []    
-    # offer_dispaly = []
     for i in product_item:  
-        
         id = i.product_id
         pdt = FitProduct.objects.get(id=id)
         images = ProductImage.objects.filter(product_id=id).first()
@@ -590,12 +587,6 @@ def order_detail_page(request, id):
             else:
                 price_discount = discount_price
             price-= price_discount
-            
-        # data.append({
-        #     'id':pdt.id,
-        #     'product_price_withoffer':price,
-        # })
-       
         product_bucket.append({
             'name':pdt.name,
             'price':price,
