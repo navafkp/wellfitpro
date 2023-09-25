@@ -155,7 +155,8 @@
                     </div>
                 </div>
                 <div class="navbar-nav w-100">
-                    <a href="{% url 'myaccount' %}" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2 "></i>Dashboard</a>
+                    <a href="{% url 'myaccount' %}" class="nav-item nav-link active"><i
+                            class="fa fa-tachometer-alt me-2 "></i>Dashboard</a>
                     <a href="{% url 'user_order' %}" class="nav-item nav-link "><i
                             class="fa fa-tachometer-alt me-2"></i>Orders</a>
 
@@ -180,9 +181,7 @@
                 <a href="#" class="sidebar-toggler flex-shrink-0">
                     <i class="fa fa-bars"></i>
                 </a>
-                <!-- <form class="d-none d-md-flex ms-4">
-                    <input class="form-control bg-dark border-0" type="search" placeholder="Search">
-                </form> -->
+
 
                 <div class="abc">
                     <ul>
@@ -200,7 +199,7 @@
                             <i class="fa fa-bell me-lg-2"></i>
                             <span class="d-none d-lg-inline-flex">Notifications</span>
                         </a>
-                       
+
                         {% if 'notifications' in request.session %}
                         <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
                             {% for notification in request.session.notifications %}
@@ -209,25 +208,22 @@
                                 <small>{{ notification.timestamp }}</small>
                             </a>
                             <hr class="dropdown-divider">
-                        {% endfor %}
+                            {% endfor %}
                         </div>
                         {% endif %}
-                        
-                    </div>
-                    
 
-                    {% comment %}
-                    <hrca class="dropdown-divider">
-                    <a href="#" class="dropdown-item text-center">See all notifications</a> {% endcomment %}
+                    </div>
+
+
+
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            {% comment %} <img class="rounded-circle me-lg-2" src="img/user.jpg" alt=""
-                                style="width: 40px; height: 40px;"> {% endcomment %}
+
                             <span class="d-none d-lg-inline-flex">{{request.user}}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
                             <a href="#" class="dropdown-item">My Profile</a>
-                            {% comment %} <a href="#" class="dropdown-item">Settings</a> {% endcomment %}
+
                             <a href="{% url 'signout' %}" class="dropdown-item">Log Out</a>
                         </div>
                     </div>
@@ -273,23 +269,23 @@
     <script src="{% static 'js/main.js' %}"></script>
 </body>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         var referringPage = document.referrer;
         var addAddressButton = document.getElementById('addAddressButton');
         console.log(addAddressButton)
         var sourceInput = document.getElementById('source_input');
-        
+
         if (referringPage.includes('checkout')) {
             console.log('checkout')
-            addAddressButton.addEventListener('click', function() {
+            addAddressButton.addEventListener('click', function () {
                 console.log('sasas')
                 sourceInput.value = 'checkout';
                 document.querySelector('formforaddaddress').submit();
             });
         } else {
             console.log('user_profile')
-            addAddressButton.addEventListener('click', function() {
-                
+            addAddressButton.addEventListener('click', function () {
+
                 sourceInput.value = 'user_profile';
                 document.querySelector('formforaddaddress').submit();
             });
@@ -315,8 +311,8 @@
 
 {% block scripts%}
 <script>
-function popup(){
-    window.open('', 'popUpWindow', 'height = 300, width = 500, left = 100, top = 100, scrollbars = yes, resizable = yes, menubar = no, toolbar = yes, location = no, directories = no, status = yes')
+    function popup() {
+        window.open('', 'popUpWindow', 'height = 300, width = 500, left = 100, top = 100, scrollbars = yes, resizable = yes, menubar = no, toolbar = yes, location = no, directories = no, status = yes')
     }
 </script>
 

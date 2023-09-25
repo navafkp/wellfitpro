@@ -3,210 +3,177 @@
 
 
 <main class="container">
-    <!-- HERO SECTION-->
-    <section class=" bg-light">
-        <div class="container">
-            <div class="row px-4 px-lg-5 py-lg-4 align-items-center">
-                <div class="col-lg-6">
-                    <h1 class="h2 text-uppercase mb-0">Checkout</h1>
-                </div>
-                <div class="col-lg-6 text-lg-end">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-lg-end mb-0 px-0 bg-light">
-                            <li class="breadcrumb-item"><a class="text-dark" href="{% url 'home' %}">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">checkout</li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
+  <!-- HERO SECTION-->
+  <section class=" bg-light">
+    <div class="container">
+      <div class="row px-4 px-lg-5 py-lg-4 align-items-center">
+        <div class="col-lg-6">
+          <h1 class="h2 text-uppercase mb-0">Checkout</h1>
         </div>
-
-        
-
-  
+        <div class="col-lg-6 text-lg-end">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb justify-content-lg-end mb-0 px-0 bg-light">
+              <li class="breadcrumb-item"><a class="text-dark" href="{% url 'home' %}">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">checkout</li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+    </div>
 
     <section class="py-5">
-        <h2 class="h5 text-uppercase mb-4">Checkout</h2>
-        
-        <span><a href="{% url 'user_profile' %}?from=checkout#addaddressmodal" class="btn btn-primary">ADD a new address</a>
-        </span>
+      <h2 class="h5 text-uppercase mb-4">Checkout</h2>
 
-        </section>
-        <div class="row" >
-          
-          <div class="col-lg-7">
+      <span><a href="{% url 'user_profile' %}?from=checkout#addaddressmodal" class="btn btn-primary">ADD a new
+          address</a>
+      </span>
+
+    </section>
+    <div class="row">
+      <div class="col-lg-7">
+        <form id="addressForm" class="row g-3" method="post">
+          {% csrf_token %}
+          <label for="address">Select an Address:</label>
+          <select id="address" name="selected_address">
+
+            {% for address in addresses %}
+            <option value="{{ address.id }}">
+              {{ address.first_name }} {{ address.last_name }}, {{ address.addressline1 }},
+              {{ address.city }}, {{ address.state.name }}, {{ address.country.name }}, {{ address.pin }}
+            </option>
+            {% endfor %}
+          </select>
 
 
-            {% comment %} <form method="post">
-              {% csrf_token %}
-              
-              
-              <input type="submit" value="Continue to Payment">
-          </form> {% endcomment %}
-            {% comment %}  {% endcomment %}
-            
+          <div class="form-group">
 
+            <input name="is_shipping" type="checkbox" id="addButton">
+            <label>If you wish to deliver to shipping address</label>
 
+            <div id="formforaddress" style="display: none;">
 
+              <div class="col-12">
+                <label for="inputShipaddress1" class="form-label">Address 1</label>
+                <input name="Shipaddressline1" type="text" class="form-control" id="inputShipaddress1"
+                  placeholder=" street name, and locality">
+              </div>
+              <div class="col-12">
+                <label for="inputShipaddress2" class="form-label">Address 2</label>
+                <input name="Shipaddressline2" type="text" class="form-control" id="inputShipaddress2"
+                  placeholder="Apartment, studio, or floor">
+              </div>
+              <div class="col-md-6">
+                <label for="inputShipcity1" class="form-label">City</label>
+                <input name="Shipcity" type="text" class="form-control" id="inputShipcity1">
+              </div>
+              <div class="col-md-4">
+                <label for="inputShipstate" class="form-label">State</label>
+                <select name="Shipstate" id="inputShipstate" class="form-select">
 
-            <form id="addressForm" class="row g-3" method="post">
-              {% csrf_token %}
-              <label for="address">Select an Address:</label>    
-              <select id="address" name="selected_address">
-                
-                  
+                  <option value="">Choose...</option>
+                  {% for state in states %}
 
-                  {% for address in addresses %}
-                      <option value="{{ address.id }}" {% if foorloop.first %} selected {% endif %}>{{ address.first_name }} {{ address.last_name }}, {{ address.addressline1 }}, {{ address.city }}, {{ address.state.name }}, {{ address.country.name }}, {{ address.pin }}</option>
+                  <option value="{{state.id}}">{{state.name }}</option>
                   {% endfor %}
-              </select>
-          
-              
-               
-                
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label for="inputShipcountry" class="form-label">Country</label>
+                <select name="Shipcountry" id="inputShipcountry" class="form-select">
 
-                        <div class="form-group">
-                          
-                          <input name="is_shipping"  type="checkbox" id="addButton" >
-                          <label>If you wish to deliver to shipping address</label>
-                         
-                      
-                        {% comment %} <button type="button" value ="Add Child" id="addButton" >if you wish to Deliver to different address, click here</button> {% endcomment %}
-                        <div id="formforaddress" style="display: none;"> 
+                  <option value="">Choose...</option>
+                  {% for country in countries %}
+                  <option value="{{country.id}}">{{country.name }}</option>
 
-                            <div class="col-12">
-                                <label for="inputShipaddress1" class="form-label">Address 1</label>
-                                <input name ="Shipaddressline1" type="text" class="form-control" id="inputShipaddress1" placeholder=" street name, and locality">
-                              </div>
-                              <div class="col-12">
-                                <label for="inputShipaddress2" class="form-label">Address 2</label>
-                                <input name="Shipaddressline2" type="text" class="form-control" id="inputShipaddress2" placeholder="Apartment, studio, or floor">
-                              </div>
-                              <div class="col-md-6">
-                                <label for="inputShipcity1" class="form-label">City</label>
-                                <input name="Shipcity" type="text" class="form-control" id="inputShipcity1">
-                              </div>
-                              <div class="col-md-4">
-                                <label for="inputShipstate" class="form-label">State</label>
-                                <select name="Shipstate" id="inputShipstate" class="form-select">
-                                   
-                                  <option value = "">Choose...</option>
-                                  {% for state in states %}
+                  {% endfor %}
+                </select>
+              </div>
 
-                                  <option value = "{{state.id}}" >{{state.name }}</option>
-                                  {% endfor %}
-                                </select>
-                              </div>
-                              <div class="col-md-4">
-                                <label for="inputShipcountry" class="form-label">Country</label>
-                                <select name="Shipcountry" id="inputShipcountry" class="form-select">
-        
-                                    <option value = "">Choose...</option>
-                                  {% for country in countries %}
-                                  <option value = "{{country.id}}">{{country.name }}</option>
-                         
-                                  {% endfor %}
-                                </select>
-                              </div>
-        
-                            <div class="col-md-2">
-                              <label for="inputShippin" class="form-label">PIN</label>
-                              <input name="Shippin" type="text" class="form-control" id="inputShippin">
-                            </div>
+              <div class="col-md-2">
+                <label for="inputShippin" class="form-label">PIN</label>
+                <input name="Shippin" type="text" class="form-control" id="inputShippin">
+              </div>
 
-                            </div>
-                     
-                      
-                    </div>
-                        
-                    
-                
+            </div>
 
 
-
-
-
-                    <div class="col-12">
-                      
-                        <button type="submit" class="btn btn-primary">Continue</button>
-                      </div>
-                    </form>
-                    
-                   
           </div>
-          {% if 'order_sum' in request.session %}
-            <div class="col-lg-5">
-                <div class="card border-0 rounded-0 p-lg-4 bg-light">
-                    <div class="card-body">
-                        <h5 class="text-uppercase mb-4">Your Order</h5>
 
-                        <!-- Display cart_item_total data -->
+          <div class="col-12">
+
+            <button type="submit" class="btn btn-primary">Continue</button>
+          </div>
+        </form>
+
+      </div>
+      {% if 'order_sum' in request.session %}
+      <div class="col-lg-5">
+        <div class="card border-0 rounded-0 p-lg-4 bg-light">
+          <div class="card-body">
+            <h5 class="text-uppercase mb-4">Your Order</h5>
+
+            <!-- Display cart_item_total data -->
             <ul>
               {% for item in cart_item_total %}
-                  <li class="d-flex align-items-center justify-content-between">
-                      <span class="text-muted small">{{ item.product}}</span>
-                      <span class="text-muted small">{{ item.total_price }}</span>
-                  </li>
-                  <br>
+              <li class="d-flex align-items-center justify-content-between">
+                <span class="text-muted small">{{ item.product}}</span>
+                <span class="text-muted small">{{ item.total_price }}</span>
+              </li>
+              <br>
               {% endfor %}
             </ul>
 
-<!-- Display request.session.order_sum data -->
-                <ul>
-                  {% for key, value in request.session.order_sum.items %}
-                    {% if value != 0 and value != 0.0 and key != 'category offer discount' and  key != 'category offer name' %}
-                  
-                      <li class="d-flex align-items-center justify-content-between">
-                          <strong class="text-uppercase small font-weight-bold">{{ key }}</strong>
-                          <span class="text-muted small fw-bold">{{ value }}</span>
-                      </li>
-                      <br>
-                     
-                      {% endif %}
-                  {% endfor %}
-                </ul>
-                
-              
-                <form action=""  method = 'post'>
-                  {% csrf_token %}
-                  
-                  <div class="input-group mb-0">
-                    <input name = "coupon" class="form-control" type="text" placeholder="Enter your coupon">
-                    
-                    <button style = "background-color: #374FCA" class="btn text-white btn-sm w-100" type="submit"> <i class="fas fa-gift me-2"></i>Apply coupon</button>
-                 
-                  </div>
-                </form>
-              
+            <!-- Display request.session.order_sum data -->
+            <ul>
+              {% for key, value in request.session.order_sum.items %}
+              {% if value != 0 and value != 0.0 and key != 'category offer discount' and key != 'category offer name' %}
+
+              <li class="d-flex align-items-center justify-content-between">
+                <strong class="text-uppercase small font-weight-bold">{{ key }}</strong>
+                <span class="text-muted small fw-bold">{{ value }}</span>
+              </li>
+              <br>
+
+              {% endif %}
+              {% endfor %}
+            </ul>
 
 
+            <form action="" method='post'>
+              {% csrf_token %}
 
+              <div class="input-group mb-0">
+                <input name="coupon" class="form-control" type="text" placeholder="Enter your coupon">
 
-                    </div>
-                </div>
-            </div>
-           {% endif  %}
+                <button style="background-color: #374FCA" class="btn text-white btn-sm w-100" type="submit"> <i
+                    class="fas fa-gift me-2"></i>Apply coupon</button>
 
-           
+              </div>
+            </form>
+          </div>
         </div>
-    </section>
+      </div>
+      {% endif %}
 
-    {% block scripts %}
-    <script>
-      const addressDropdown = document.getElementById('address');
-      const addressForm = document.getElementById('addressForm');
-  
-      addressDropdown.addEventListener('change', function () {
-          const selectedAddressId = this.value;
-          if (selectedAddressId) {
-            
-              addressForm.action = `{% url 'payment_mode' id=0 %}`.replace('0', selectedAddressId);
-          } else {
-              // Handle the case when no address is selected (e.g., show an error message).
-              // You can also disable the submit button in this case.
-          }
-      });
+
+    </div>
+  </section>
+
+  {% block scripts %}
+  <script>
+    const addressDropdown = document.getElementById('address');
+    const addressForm = document.getElementById('addressForm');
+
+    addressForm.addEventListener('submit', function () {
+      const selectedAddressId = addressDropdown.value;
+      if (selectedAddressId) {
+
+        addressForm.action = `{% url 'payment_mode' id=0 %}`.replace('0', selectedAddressId);
+      } else {
+
+      }
+    });
   </script>
-    {% endblock scripts %}
+  {% endblock scripts %}
 </main>
 {% endblock %}

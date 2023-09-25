@@ -18,7 +18,7 @@ import copy
 from django.conf import settings
 import re
 from django.core.exceptions import ValidationError
-from product.models import Cart, CartItem, FitProduct, WishList, WishListItem, Order, ShippingAddress, OrderItem, ProductImage, Wallet
+from product.models import Cart, CartItem, FitProduct, WishList, WishListItem, Order, ShippingAddress, OrderItem, ProductImage, Wallet,Offer
 from accounts.models import State, Country, Address, CustomUser, Notifications
 from django.db.models import F, Value
 from django.db.models.functions import Concat  
@@ -65,39 +65,45 @@ def register(request):
                 messages.info(request, "Please enter a valid email address")
             else:    
                 # checking user existence in database
-                if User.objects.filter(email=email).exists():
+                user = User.objects.filter(email=email).exists()
+                if user:
                     messages.info(request, "Email ID already taken")
-                # if refferal available, add it in session for further use
-                elif referral_code:
-                    refered = CustomUser.objects.filter(referral_code = referral_code).first()
-                    if refered:
-                        request.session['refered'] = serializers.serialize('json', [refered])
+                else:
+                    info = User.objects.filter(phone=phone_number).exists()
+                    if info:
+                        messages.info(request, "Mobile number is already taken")
                     else:
-                        messages.info(request, "Please enter correct referal code")
-                        return redirect('register')
-                message = generate_otp()
-                receiver_mail = email
-                sender_email = config('sender_email', default='')
-                password = config('password', default='')
-                # sending email to user and handling exception if required
-                try:
-                    with smtplib.SMTP("smtp.gmail.com", 587) as server:
-                        server.starttls()
-                        server.login(sender_email, password)
-                        server.sendmail(sender_email, receiver_mail, message)      
-                except SMTPConnectError:
-                    messages.error(request, 'Failed to connect to the SMTP server.')
-                except SMTPAuthenticationError:
-                    messages.error(request, 'Failed to send OTP email. Please check your email configuration.')
-                    return redirect('register')
-                # saving user without activating, once the user submit OTP, we will make the user active
-                user = User.objects.create_user( email=email, first_name=first_name, last_name=last_name, phone=phone_number, is_active = False)
-                user.set_password(password1)
-                user.save()
-                request.session['email'] =  email
-                request.session['otp']   =  message
-                messages.success (request, 'OTP is sent to your email')
-                return redirect('verify_signup')
+                    # if refferal available, add it in session for further use
+                        if referral_code:
+                            refered = CustomUser.objects.filter(referral_code = referral_code).first()
+                            if refered:
+                                request.session['refered'] = serializers.serialize('json', [refered])
+                            else:
+                                messages.info(request, "Please enter correct referal code")
+                                return redirect('register')
+                        message = generate_otp()
+                        receiver_mail = email
+                        sender_email = config('sender_email', default='')
+                        password = config('password', default='')
+                        # sending email to user and handling exception if required
+                        try:
+                            with smtplib.SMTP("smtp.gmail.com", 587) as server:
+                                server.starttls()
+                                server.login(sender_email, password)
+                                server.sendmail(sender_email, receiver_mail, message)      
+                        except SMTPConnectError:
+                            messages.error(request, 'Failed to connect to the SMTP server.')
+                        except SMTPAuthenticationError:
+                            messages.error(request, 'Failed to send OTP email. Please check your email configuration.')
+                            
+                        # saving user without activating, once the user submit OTP, we will make the user active
+                        user = User.objects.create_user( email=email, first_name=first_name, last_name=last_name, phone=phone_number, is_active = False)
+                        user.set_password(password1)
+                        user.save()
+                        request.session['email'] =  email
+                        request.session['otp']   =  message
+                        messages.success (request, 'OTP is sent to your email')
+                        return redirect('verify_signup')
     return render(request, 'user/signup.html')
 
 # generate OTP for sending OTP
@@ -172,46 +178,52 @@ def login_user(request):
         input_value  = request.POST.get('input')
         if not input_value :
             messages.info(request, 'please fill the email ID or Phone Number')
-            return redirect('login')
-        is_mobile = validate_phone_number(input_value )
+        is_mobile = validate_phone_number(input_value)
         # mobile is a bool true from validation
         if is_mobile:
             user = None
             try:
-                user = User.objects.get(phone=input_value )
+                user = User.objects.get(phone=input_value)
             except User.DoesNotExist:
                 messages.info(request, 'Invalid phone number')
                 return redirect('login')
-            request.session['email'] = user.email
-            return redirect('verify_signin')
+            if user.is_blocked == False:
+                request.session['email'] = user.email
+                return redirect('verify_signin')
+            else:
+                messages.success (request, 'Account is blocked')
         # email process started
         elif '@' in input_value:
             try:
-                user = User.objects.filter(email = input_value).first()
+                user = User.objects.get(email = input_value)
+                
             except User.DoesNotExist:
                 messages.info(request, "Enter a valid email ID")
                 return redirect('login')
-            message = generate_otp()
-            receiver_mail = input_value
-            sender_email = config('sender_email', default='')
-            password = config('password', default='')
-            try:
-                with smtplib.SMTP("smtp.gmail.com", 587) as server:
-                    server.starttls()
-                    server.login(sender_email, password)
-                    server.sendmail(sender_email, receiver_mail, message)       
-            except SMTPConnectError:
-                messages.error(request, 'Failed to connect to the SMTP server.')     
-            except smtplib.SMTPAuthenticationError:
-                messages.error(request, 'Failed to send OTP email. Please check your email configuration.')
-                return redirect('login')
-            request.session['email'] =  input_value
-            request.session['otp']   =  message
-            messages.success (request, 'OTP is sent to your email')
-            return redirect('verify_signin_email')
+            if user.is_blocked == False:
+                message = generate_otp()
+                receiver_mail = input_value
+                sender_email = config('sender_email', default='')
+                password = config('password', default='')
+                try:
+                    with smtplib.SMTP("smtp.gmail.com", 587) as server:
+                        server.starttls()
+                        server.login(sender_email, password)
+                        server.sendmail(sender_email, receiver_mail, message)       
+                except SMTPConnectError:
+                    messages.error(request, 'Failed to connect to the SMTP server.')     
+                except smtplib.SMTPAuthenticationError:
+                    messages.error(request, 'Failed to send OTP email. Please check your email configuration.')
+                    return redirect('login')
+                request.session['email'] =  input_value
+                request.session['otp']   =  message
+                messages.success (request, 'OTP is sent to your email')
+                return redirect('verify_signin_email')
+            else:
+                messages.success (request, 'Account is blocked')
         else:
             messages.info(request, 'Please enter a valid email or mobile number')
-            return redirect('login')              
+                       
         
     return render(request, 'user/signin.html')
 
@@ -554,17 +566,39 @@ def order_detail_page(request, id):
     if order_instance.is_shipping:
         shipping_addresses = order_instance.shippingaddress_set.all()
     product_item = OrderItem.objects.filter(order_id=id)
+   
     product_bucket = []
+    # data = []    
+    # offer_dispaly = []
     for i in product_item:  
+        
         id = i.product_id
         pdt = FitProduct.objects.get(id=id)
         images = ProductImage.objects.filter(product_id=id).first()
         image = None
         if images:
             image = images.image.url
+    
+        cat_id = pdt.category_id
+        cat_offer = Offer.objects.filter(category_id=cat_id, is_active = True).values('name', 'discount_price', 'is_active', 'is_percentage')
+        price=pdt.sale_price
+        price_discount = 0
+        if cat_offer:
+            discount_price = int(cat_offer[0]['discount_price'])
+            if cat_offer[0]['is_percentage']:
+                price_discount = price*discount_price/100
+            else:
+                price_discount = discount_price
+            price-= price_discount
+            
+        # data.append({
+        #     'id':pdt.id,
+        #     'product_price_withoffer':price,
+        # })
+       
         product_bucket.append({
             'name':pdt.name,
-            'price':pdt.price,
+            'price':price,
             'image':image
         })
   

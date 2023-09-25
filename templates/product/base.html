@@ -107,36 +107,22 @@ input[type="radio"][checked] + label.fas.fa-star {
                             
                             <a class="nav-link" href="{% url 'cart' %}?all=view"> 
                                 <i class="fas fa-dolly-flatbed me-1 text-gray"></i>Cart
-                                {% comment %} <small class="text-gray fw-normal">   ( <span id="cart-count"> {% if 'total_cart' not in request.session %} 0 {% else %} {{request.session.total_cart}} {% endif %} </span>) </small></a> {% endcomment %}
                                 <small class="text-gray fw-normal">   ( <span id="cart-count"> {% if 'total_cart' not in request.session %} 0 {% else %} {{request.session.total_cart}} {% endif %} </span>) </small></a>
-                                    
-                                
                                 </li>
-
-
                         <li class="nav-item"><a class="nav-link" href="{% url 'wishlist' %}"> <i
                                     class="far fa-heart me-1"></i>wishlist<small class="text-gray fw-normal">
                                     (<span class="wishlist-count"> {% if 'wishdata' not in request.session %} 0 {% else %} {{request.session.wishdata|length}} {% endif %} </span>)</small></a></li>
 
-
-
-
-
-
-
                                      <div class="nav-item dropdown">
                                         {% if 'email' in request.session or 'adminemail' in request.session %}
                                         <a  style ="color:#374FCA;" href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                                            {% comment %} <img class="rounded-circle me-lg-2" src="img/user.jpg" alt="" style="width: 40px; height: 40px;"> {% endcomment %}
                                            
                                            <span class="d-none d-lg-inline-flex">My Account</span>
                                             
                                         </a>
-                
-                
+                            
                                         <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
                                             <a href="{% url 'myaccount'  %}" class="dropdown-item">My Profile</a>
-                                            {% comment %} <a href="#" class="dropdown-item">Settings</a> {% endcomment %}
                                             <a href="{% url 'signout' %}" class="dropdown-item">Log Out</a>
                                         </div>
 
@@ -146,34 +132,8 @@ input[type="radio"][checked] + label.fas.fa-star {
                                         <li class="nav-item"><a class="nav-link" href="{% url 'login' %}"> <i
                                             class="fas fa-user me-1 text-gray fw-normal"></i>Login</a></li> 
                                         {% endif %} 
-
-                               
+                              
                                     </div> 
-                                   
-
-
-
-
-
-
-
-
-
-
-
-            {% comment %} {% if 'email' in request.session%}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'myaccount' %}"> <i
-                                    class="fas fa-user me-1 text-gray fw-normal"></i>My Account</a></li>
-
-                        {% else %}
-
-
-                        
-                        <li class="nav-item"><a class="nav-link" href="{% url 'signin' %}"> <i
-                            class="fas fa-user me-1 text-gray fw-normal"></i>Login</a></li> 
-                        {% endif%}  {% endcomment %}
-
-
                     </ul>
                 </div>
             </nav>
@@ -193,8 +153,6 @@ input[type="radio"][checked] + label.fas.fa-star {
     {% block content %}
 
     {% endblock %}
-
-
 
     <footer class="bg-dark text-white">
         <div class="container py-4">
@@ -236,7 +194,7 @@ input[type="radio"][checked] + label.fas.fa-star {
                         <p class="small text-muted mb-0">Template designed by <a class="text-white reset-anchor"
                                 href="https://bootstrapious.com/p/boutique-bootstrap-e-commerce-template">Bootstrapious</a>
                         </p>
-                        <!-- If you want to remove the backlink, please purchase the Attribution-Free License. See details in readme.txt or license.txt. Thanks!-->
+                       
                     </div>
                 </div>
             </div>
@@ -327,17 +285,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
       </script>
     
-    
-    
-
-{% comment %} update to cart - decrease {% endcomment %}
-
-
-
-
-
-
-
     <script>
     
     
@@ -377,11 +324,7 @@ document.addEventListener('DOMContentLoaded', function () {
     </script>
 
 
-
-
-
 {% comment %} add to wishlist {% endcomment %}
-
 
      <script>
       
@@ -423,9 +366,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 {% comment %} wishlist increae {% endcomment %}
-
-
-
 
 {% comment %}  {% endcomment %}
    <script>
@@ -472,16 +412,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }); 
   
-
    </script>
 
-   
     <script>
-        // ------------------------------------------------------- //
-        //   Inject SVG Sprite - 
-        //   see more here 
-        //   https://css-tricks.com/ajaxing-svg-sprite/
-        // ------------------------------------------------------ //
         function injectSvgSprite(path) {
 
             var ajax = new XMLHttpRequest();
@@ -525,12 +458,6 @@ document.addEventListener('DOMContentLoaded', function () {
         
         };
     </script>
-
-
-
-
-
-
 
 </body>
 

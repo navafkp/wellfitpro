@@ -21,36 +21,28 @@
     </div>
   </section>
 
-
-
   {% comment %} {% endcomment %}
 
   <section class="py-5">
     <div class="container p-0">
       <div class="row">
-     
+        <!-- Category-->
+        {% for category in ctgy %}
+        <div class="col-lg-4 col-sm-6">
+          <div class=" text-center">
+            <div class="mb-3 position-relative">
+              <div class="badge text-white bg-"></div>
+              <a class="d-block" href="{% url 'shop'%}?cat={{category.id}}"><img class="img-fluid w-100"
+                  src="/media/{{category.image}}" alt="..."></a>
 
-
-          <!-- Category-->
-          {% for category in ctgy %}
-          <div class="col-lg-4 col-sm-6">
-            <div class=" text-center">
-              <div class="mb-3 position-relative">
-                <div class="badge text-white bg-"></div>
-                <a class="d-block" href="{% url 'shop'%}?cat={{category.id}}"><img
-                    class="img-fluid w-100" src="/media/{{category.image}}" alt="..."></a>
-                
-              </div>
-              <h6> <a class="reset-anchor" href="{% url 'shop' %}?cat={{category.id}}">{{category.name}}</a></h6>
-              
             </div>
+            <h6> <a class="reset-anchor" href="{% url 'shop' %}?cat={{category.id}}">{{category.name}}</a></h6>
+
           </div>
-          {% endfor %}
-
-
-
         </div>
+        {% endfor %}
       </div>
+    </div>
   </section>
 </div>
 {% endblock %}

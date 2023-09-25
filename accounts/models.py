@@ -76,7 +76,7 @@ class Address(models.Model):
     first_name = models.CharField(max_length=80)
     last_name = models.CharField(max_length=80)
     email = models.EmailField(_('email_address'), unique=True)
-    phoneNumber = models.CharField(validators = [validate_phone_number], unique = True)
+    phoneNumber = models.CharField(validators = [validate_phone_number])
     addressline1 = models.CharField(max_length=255)
     addressline2 = models.CharField(max_length=255)
     city = models.CharField(max_length=80)

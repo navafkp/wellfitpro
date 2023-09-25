@@ -1,38 +1,39 @@
-
- {% extends 'user/base.html' %}    
- {% block content %}   
- <!-- Sidebar End -->
-
-
-        <!-- Content Start -->
-        
-        
-
-            <div class="container-fluid pt-4 px-4">
-                {% if request.user.is_authenticated %}
-                <h4> Hello {{request.user.first_name}}, <a href=" {% url 'signout' %}"> Log out</a></h4> 
-                {% endif %}
-
-                <p>From your account dashboard you can view your recent <a href="{% url 'user_order' %}">orders</a> manage your <a href="{% url 'user_profile' %}">shipping and billing addresses</a>.</p>
-           
-                <div style="border-radius: 100px; width: 100%;  border: 1px solid black; background: khaki;" class=" text-center py-4 ">
-                    <p class="text-uppercase">Your referal code is:</p>
-                    <p style="color:red; font-size:20px"> {{referral_code}}</p>
-                    {% comment %} <button class="btn btn-primary ">Invite</button> {% endcomment %}
-
-                    <a href="https://api.whatsapp.com/send?text={{data}}" data-action="share/whatsapp/share">Share via Whatsapp</a>
-        
-                    </div>
-           
-            </div>
-            
-        </div>
-        <!-- Content End -->
+{% extends 'user/base.html' %}
+{% block content %}
+<!-- Sidebar End -->
 
 
-       
+<!-- Content Start -->
+
+
+
+<div class="container-fluid pt-4 px-4">
+    {% if request.user.is_authenticated %}
+    <h4> Hello {{request.user.first_name}}, <a href=" {% url 'signout' %}"> Log out</a></h4>
+    {% endif %}
+
+    <p>From your account dashboard you can view your recent <a href="{% url 'user_order' %}">orders</a> manage your <a
+            href="{% url 'user_profile' %}">shipping and billing addresses</a>.</p>
+
+    <div style="border-radius: 100px; width: 100%;  border: 1px solid black; background: khaki;"
+        class=" text-center py-4 ">
+        <p class="text-uppercase">Your referal code is:</p>
+        <p style="color:red; font-size:20px"> {{referral_code}}</p>
+
+
+        <a href="https://api.whatsapp.com/send?text={{data}}" data-action="share/whatsapp/share">Share via Whatsapp</a>
 
     </div>
 
-   
-    {% endblock %}
+</div>
+
+</div>
+<!-- Content End -->
+
+
+
+
+</div>
+
+
+{% endblock %}

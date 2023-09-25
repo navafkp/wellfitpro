@@ -66,16 +66,6 @@
 
 </div>
 {% endfor %}
-{% comment %} modal large end {% endcomment %}
-
-
-{% comment %} {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %} {% endcomment %}
 
 <!-- HERO SECTION-->
 <div class="container">
@@ -87,40 +77,34 @@
           <h1 class="h2 text-uppercase  abm mb-3">Make it easy with right accessories</h1>
           <a class="btn ab mt-5 btnrelation" href="{% url 'shop' %}">Buy Now</a>
         </div>
-
-
         <div class="col-lg-6 ">
           <img class="img-fluid " src="{% static 'img/pngwing.png' %}" alt="" />
         </div>
       </div>
     </div>
   </section>
-{% comment %} offer section {% endcomment %}
+  {% comment %} offer section {% endcomment %}
 
-<section class="pt-5">
-  <header class="text-center">
+  <section class="pt-5">
+    <header class="text-center">
 
-    <h2 class="h5 text-uppercase mb-4">Offers</h2>
-  </header>
+      <h2 class="h5 text-uppercase mb-4">Offers</h2>
+    </header>
 
-
-
-  <div class="row">
-    {% for i in offers %}
-    <div class="col-md-4">
-      <a class="category-item" href="{% url 'shop' %}?offer={{i.id}}">
-        <img class="img-fluid" src="/media/{{i.category.image}}" alt="" />
-        <strong class="category-item-title">{{i.name}}</strong>
-      </a>
+    <div class="row">
+      {% for i in offers %}
+      <div class="col-md-4">
+        <a class="category-item" href="{% url 'shop' %}?offer={{i.id}}">
+          <img class="img-fluid" src="/media/{{i.category.image}}" alt="" />
+          <strong class="category-item-title">{{i.name}}</strong>
+        </a>
+      </div>
+      {% endfor %}
     </div>
-  {% endfor %}
-  </div>
 
+  </section>
 
-
-</section>
-
-{% comment %}  {% endcomment %}
+  {% comment %} {% endcomment %}
 
   <!-- CATEGORIES SECTION-->
   <section class="pt-5">
@@ -128,9 +112,6 @@
 
       <h2 class="h5 text-uppercase mb-4">Browse our categories</h2>
     </header>
-
-
-
     <div class="row">
       {% for category in ctgy%}
       <div class="col-md-4">
@@ -142,16 +123,10 @@
       {% endfor %}
     </div>
 
-
-
-
     <div class="text-center mt-4 p-2" style=" background-color: #f8f9fa; width: 100%">
 
       <a href="{% url 'category' %}" class="h5 text-uppercase  text-dark mb-4">View all categories</a>
     </div>
-
-
-
 
   </section>
   <!-- TRENDING PRODUCTS-->
@@ -160,11 +135,6 @@
       <div>
         <h2 class="h5 text-uppercase mb-4">Our featured products</h2>
       </div>
-      
-      {% comment %} <div>
-        <a style="background-color:#374FCA; color:white" class="btn rounded-pill "
-          href="{% url 'featuredDetail' id='featured' %}"> view more</a>
-      </div> {% endcomment %}
 
       <form action="{% url 'shop' %}" method='get'>
         {% csrf_token%}
@@ -174,9 +144,9 @@
     </header>
     <div class="row">
       <!-- PRODUCT-->
-     
+
       {% for i in pdt %}
-      
+
       <div class="col-xl-3 col-lg-4 col-sm-6">
         <div class="product text-center">
           <div class="position-relative mb-3">
@@ -191,27 +161,26 @@
             {% endif %}
 
             {% if offer_dispaly %}
-            {% for banner in offer_dispaly %} 
-            {% if i.id == banner.id %} 
-           
-            <div class="product-banner"> 
+            {% for banner in offer_dispaly %}
+            {% if i.id == banner.id %}
+
+            <div class="product-banner">
               <div class="offer-overlay-indexpage">
-                  <p style="font-size:9px" class="offer-text m-0">{{banner.display}}</p>
+                <p style="font-size:9px" class="offer-text m-0">{{banner.display}}</p>
               </div>
-          </div>
-          {% endif %}
-          {% endfor  %}
-          {% endif %} 
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
 
 
             <div class="product-overlay">
               <ul class="mb-0 list-inline" style="display: inline-flex;}">
-                {% comment %} <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-outline-dark" href="#!"><i
-                      class="far fa-heart"></i></a></li> {% endcomment %}
                 <li>
                   <div class="product-container">
                     <input type="hidden" class="product-id" value="{{i.id}}">
-                    <button data-product-id="{{ i.id }}" class=" btn btn-sm btn-outline-dark list-inline-item mr-0 addTowishlistBtn"><i
+                    <button data-product-id="{{ i.id }}"
+                      class=" btn btn-sm btn-outline-dark list-inline-item mr-0 addTowishlistBtn"><i
                         class="far fa-heart me-2"></i></button>
                   </div>
 
@@ -220,7 +189,7 @@
 
                 <li>
                   <div class="product-container">
-                    
+
                     <!-- Add to cart button -->
                     <input type="hidden" class="product-id" value="{{i.id}}">
                     <button data-product-id="{{ i.id }}"
@@ -229,8 +198,6 @@
                   </div>
                 </li>
 
-                {% comment %} <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-dark" href="cart.html">Add
-                    to cart</a></li> {% endcomment %}
                 <li class="list-inline-item me-0"><a class="btn btn-sm btn-outline-dark" href="#productView"
                     data-target="#productView-{{i.id}}" data-toggle="modal"><i class="fas fa-expand"></i></a></li>
 
@@ -239,33 +206,27 @@
             </div>
           </div>
           <h6> <a class="reset-anchor" href="detail.html">{{i.name}}</a></h6>
-          {% comment %} {% if i.sale_price != i.price %}
+          {% if data %}
+          {% for offer in data %}
+          {% if offer.id == i.id and offer.product_price_withoffer != i.price %}
           <div class="d-flex">
-          <p style="color:green!important;" class="small text-muted ms-4 px-4 fw-bold ">{{i.sale_price}}</p>
-          <p class="small text-muted"><del >{{i.price}}<del></p>
-          </div> {% endcomment %}
-           {% if data %}
-           {% for offer in data %}
-           {% if offer.id == i.id  and offer.product_price_withoffer != i.price %}
-           <div class="d-flex">
-           <p style="color:green!important;" class="small text-muted ms-4 px-4 fw-bold ">{{offer.product_price_withoffer}}</p>
-           <p class="small text-muted"><del >{{i.price}}<del></p>
-           </div>
-           {% elif offer.id == i.id  and offer.product_price_withoffer == i.price %}
-           <p style="color:black!important;" class="small text-muted ms-4 px-4 fw-bold ">{{i.sale_price}}</p>
-            {% endif %}
-            {% endfor %}
-            {% endif %}
-        
-        
+            <p style="color:green!important;" class="small text-muted ms-4 px-4 fw-bold ">
+              {{offer.product_price_withoffer}}</p>
+            <p class="small text-muted"><del>{{i.price}}<del></p>
+          </div>
+          {% elif offer.id == i.id and offer.product_price_withoffer == i.price %}
+          <p style="color:black!important;" class="small text-muted ms-4 px-4 fw-bold ">{{i.sale_price}}</p>
+          {% endif %}
+          {% endfor %}
+          {% endif %}
+
+
         </div>
       </div>
       {% endfor %}
 
-      
-
     </div>
-    
+
   </section>
   <!-- SERVICES-->
   <section class="py-5 bg-light">

@@ -175,6 +175,8 @@ def productdetail(request):
                 price_discount = discount_price
             p_p -= price_discount
         review_set = Review.objects.filter(product=pdt[0].id).values('comment','user_id', 'created_at', 'rate')
+        
+        print(review_set)
         for i in review_set:
             user_id=i['user_id']
             user_obj = User.objects.get(id=user_id)
@@ -366,6 +368,7 @@ def cart(request):
             'refferal':applied_referral,
             'grant total':grant_total,    
         }  
+        
         request.session['order_sum'] =order_sum
         request.session.save()
     # show all data if user not logged in, using cart_data
@@ -1306,6 +1309,7 @@ def add_review(request):
         slug = request.POST.get('p-slug')
         topic = request.POST.get('topic')
         rating = request.POST.get('rating')
+        
         pdt = FitProduct.objects.filter(Q(slug=slug) & Q(is_active=True)).filter(is_deleted = False).select_related('category').prefetch_related('productimage_set')
         data = FitProduct.objects.filter(Q(category=pdt[0].category)  & Q(is_active=True)).filter(is_deleted = False).exclude(slug=slug).prefetch_related('productimage_set') 
         pdt_description = pdt[0].description.strip()
@@ -1318,6 +1322,7 @@ def add_review(request):
             comment = topic,
             rate = rating,
         ) 
+    
         context = {
             'pdt':pdt,
             'data':data,

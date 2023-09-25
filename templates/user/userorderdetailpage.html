@@ -1,140 +1,119 @@
 {% extends 'user/base.html' %}
 {% block content %}
 
-            {% comment %} <hr class="dropdown-divider">
-                            <a href="#" class="dropdown-item text-center">See all notifications</a> {% endcomment %}
-                        
-            <!-- Navbar End -->
 
+<div class="container-fluid pt-4 px-4">
+    <div style="width:100%" class="bg-secondary text-center rounded p-4 ">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0">Order detail</h6>
 
-            <!--  Sales Start -->
-            <div class="container-fluid pt-4 px-4">
-                <div style="width:100%" class="bg-secondary text-center rounded p-4 ">
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h6 class="mb-0">Order detail</h6>
-                        
-                    </div>
-                    
-                    <div style="width: 940px;height: 550px; flex-shrink: 0; border: 1px solid black; background-color:#F4F5F9" >
-                            
-                            <div class="row">
-                                <div style = "color: black;" class="col-lg-6">
-                                <p class="mt-1 ms-2 p-0 text-start fw-bold"> Order ID: {{order_instance.id}}</p> 
-                                    <p class="mt-1 ms-2 p-0 text-start fw-bold">Date: {{order_instance.created_at}}</p> 
-                                </div>
-                                <div class="col-lg-6 text-end mt-3">
-                                {% if order_instance.status <= 3 %}
-                                <a class="btn btn-sm btn-danger" href="{% url 'user_cancel_order' id=order_instance.id %}">
-                                    Cancel Order</a>
-
-                                {% elif order_instance.status == 4 %}
-                                <p style="color:green;">Order has been delivered</p>
-                                  {% else %}
-                                  <p style="color:red;">Order has been canceled</p>
-                                  {% endif %}
-                                </div>
-
-                            </div>
-                            <hr style="background-color:#EE3434; height:3px">
-
-{% comment %}  {% endcomment %}
-
-                        <div style="font-size: 14px;" class="row">
-                            <div class="col-lg-4">
-                            <p  style = "color: black;" class="mt-1 ms-2 p-0 text-start fw-bold"> CONTACT</p> 
-                                <p class="mt-1 ms-2 p-0 text-start fw-normal">Name: {{name}}<br>Phone: {{phone}}<br>Email: {{order_instance.billing_email}}</p> 
-                            </div>
-                           {% comment %}  {% endcomment %}
-                           
-                           <div class="col-lg-4">
-                            <p  style = "color: black;" class="mt-1 ms-2 p-0 text-start fw-bold"> SHIPPING ADDRESS</p> 
-                            {% if order_instance.is_shipping %}
-                            {% for address in shipping_addresses%}
-                                <p class="mt-1 ms-2 p-0 text-start ">{{address.addressline1 }}<br>{{address.addressline2 }}<br>{{address.city }}<br>{{address.state }}<br>{{address.country }}</p> 
-                           {% endfor %}
-                            {% else %}
-                            
-                                
-                                    <p class="mt-1 ms-2 p-0 text-start ">Address: {{order_instance.billing_address1}}<br>{{order_instance.billing_address2}}<br>City: {{order_instance.billing_city}}<br>State:{{order_instance.billing_state}}<br>Country:{{order_instance.billing_country}} </p> 
-                               
-                            {% endif%}
-                        </div>
-                            {% comment %}  {% endcomment %}
-                            
-                            <div class="col-lg-4">
-
-                                <p style = "color: black;" class="mt-1 ms-2 p-0 text-start fw-bold"> PAYMENT</p> 
-                                {% if order_instance.payment_method == 'COD' %}
-                                    <p class="mt-1 ms-2 p-0 text-start ">Discount: {{order_instance.discount}} <br> Tax:{{order_instance.tax}}<br>Shipping Fee: {{order_instance.shipping_charge}}<br>Total Paid:{{order_instance.total_amout}}<br></p> 
-                                {% else %}
-
-                                <p class="mt-1 ms-2 p-0 text-start ">Discount: {{order_instance.discount}}<br> Tax:{{order_instance.tax}}<br>Shipping Fee: {{order_instance.shipping_charge}}<br>Total Paid:{{order_instance.total_amout}}<br></p> 
-                                {% endif %}
-                                </div>
-                        </div>
-                        <hr style="background-color:#EE3434; height:3px">
-                        
-                        <div class="row">
-                            <div class="col-lg-6">
-                            <p style = "color: black;" class="mt-1 ms-2 p-0 text-start fw-bold"> Product</p>
-                            <div style="font-size: 12px;" class="d-flex">
-                                {% for pdt in product_bucket %}
-                            <img style="width:10%; height:20%" class="image-fluid" src="{{pdt.image}}" alt="" />
-                                <p class="mt-1 ms-2 p-0 text-start ">{{pdt.name}}<br>{{pdt.price}}<br></p> 
-                                {% endfor %}
-                            </div>
-                            </div>
-                           {% comment %}  {% endcomment %}
-
-                           
-                        </div>
-                      
-
-                 
-                    </div>
-
-                    <a class="btn btn-primary" href="{% url 'generate_pdf' id=order_instance.id %}"> geb Invoice </a>
-               
-                    <div style="margin-top: 57px;">
-                        <ol class="progtrckr" data-progtrckr-steps="5">
-                            <li class="{% if order_instance.status >= 1 %}progtrckr-done{% else %}progtrckr-todo{% endif %}">Order Initiated</li>
-                            <li class="{% if order_instance.status >= 2 %}progtrckr-done{% else %}progtrckr-todo{% endif %}">Order Processing</li>
-                            <li class="{% if order_instance.status >= 3 %}progtrckr-done{% else %}progtrckr-todo{% endif %}">Shipped</li>
-                            <li class="{% if order_instance.status >= 4 %}progtrckr-done{% else %}progtrckr-todo{% endif %}">Delivered</li>
-                        </ol>
-                    </div>
-
-                </div>
-               
-            </div>
-            {% comment %} <!--  Sales End -->
-            <li class="progtrckr-todo">Pre-Production</li><!--
-            --><li class="progtrckr-todo">In Producti on</li><!--
-            --><li class="progtrckr-todo">Shipped</li><!--
-            --><li class="progtrckr-todo">Delivered</li> {% endcomment %}
-           
-            <!-- Footer Start -->
-            <div class="container-fluid pt-4 px-4">
-                <div class="bg-secondary rounded-top p-4">
-                    <div class="row">
-                        <div class="col-12 col-sm-6 text-center text-sm-start">
-                            &copy; <a href="#">FitPro</a>, All Right Reserved.
-                        </div>
-                        <div class="col-12 col-sm-6 text-center text-sm-end">
-                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                            Designed By <a href="">FitPro</a>
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Footer End -->
         </div>
-        <!-- Content End -->
+
+        <div style="width: 940px;height: 550px; flex-shrink: 0; border: 1px solid black; background-color:#F4F5F9">
+
+            <div class="row">
+                <div style="color: black;" class="col-lg-6">
+                    <p class="mt-1 ms-2 p-0 text-start fw-bold"> Order ID: {{order_instance.id}}</p>
+                    <p class="mt-1 ms-2 p-0 text-start fw-bold">Date: {{order_instance.created_at}}</p>
+                </div>
+                <div class="col-lg-6 text-end mt-3">
+                    {% if order_instance.status <= 3 %} <a class="btn btn-sm btn-danger"
+                        href="{% url 'user_cancel_order' id=order_instance.id %}">
+                        Cancel Order</a>
+
+                        {% elif order_instance.status == 4 %}
+                        <p style="color:green;">Order has been delivered</p>
+                        {% else %}
+                        <p style="color:red;">Order has been canceled</p>
+                        {% endif %}
+                </div>
+
+            </div>
+            <hr style="background-color:#EE3434; height:3px">
+
+            {% comment %} {% endcomment %}
+
+            <div style="font-size: 14px;" class="row">
+                <div class="col-lg-4">
+                    <p style="color: black;" class="mt-1 ms-2 p-0 text-start fw-bold"> CONTACT</p>
+                    <p class="mt-1 ms-2 p-0 text-start fw-normal">Name: {{name}}<br>Phone: {{phone}}<br>Email:
+                        {{order_instance.billing_email}}</p>
+                </div>
+                {% comment %} {% endcomment %}
+
+                <div class="col-lg-4">
+                    <p style="color: black;" class="mt-1 ms-2 p-0 text-start fw-bold"> SHIPPING ADDRESS</p>
+                    {% if order_instance.is_shipping %}
+                    {% for address in shipping_addresses%}
+                    <p class="mt-1 ms-2 p-0 text-start ">{{address.addressline1 }}<br>{{address.addressline2
+                        }}<br>{{address.city }}<br>{{address.state }}<br>{{address.country }}</p>
+                    {% endfor %}
+                    {% else %}
 
 
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+                    <p class="mt-1 ms-2 p-0 text-start ">Address:
+                        {{order_instance.billing_address1}}<br>{{order_instance.billing_address2}}<br>City:
+                        {{order_instance.billing_city}}<br>State:{{order_instance.billing_state}}<br>Country:{{order_instance.billing_country}}
+                    </p>
+
+                    {% endif%}
+                </div>
+                {% comment %} {% endcomment %}
+
+                <div class="col-lg-4">
+
+                    <p style="color: black;" class="mt-1 ms-2 p-0 text-start fw-bold"> PAYMENT</p>
+                    {% if order_instance.payment_method == 'COD' %}
+                    <p class="mt-1 ms-2 p-0 text-start ">Discount: {{order_instance.discount}} <br>
+                        Tax:{{order_instance.tax}}<br>Shipping Fee: {{order_instance.shipping_charge}}<br>Total
+                        Paid:{{order_instance.total_amout}}<br></p>
+                    {% else %}
+
+                    <p class="mt-1 ms-2 p-0 text-start ">Discount: {{order_instance.discount}}<br>
+                        Tax:{{order_instance.tax}}<br>Shipping Fee: {{order_instance.shipping_charge}}<br>Total
+                        Paid:{{order_instance.total_amout}}<br></p>
+                    {% endif %}
+                </div>
+            </div>
+            <hr style="background-color:#EE3434; height:3px">
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <p style="color: black;" class="mt-1 ms-2 p-0 text-start fw-bold"> Product</p>
+                    <div style="font-size: 12px;" class="d-flex">
+                        {% for pdt in product_bucket %}
+                        <img style="width:10%; height:20%" class="image-fluid" src="{{pdt.image}}" alt="" />
+                        <p class="mt-1 ms-2 p-0 text-start ">{{pdt.name}}<br>{{pdt.price}}<br></p>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% comment %} {% endcomment %}
+
+
+            </div>
+
+
+
+        </div>
+
+        <a class="btn btn-primary" href="{% url 'generate_pdf' id=order_instance.id %}"> geb Invoice </a>
+
+        <div style="margin-top: 57px;">
+            <ol class="progtrckr" data-progtrckr-steps="5">
+                <li class="{% if order_instance.status >= 1 %}progtrckr-done{% else %}progtrckr-todo{% endif %}">Order
+                    Initiated</li>
+                <li class="{% if order_instance.status >= 2 %}progtrckr-done{% else %}progtrckr-todo{% endif %}">Order
+                    Processing</li>
+                <li class="{% if order_instance.status >= 3 %}progtrckr-done{% else %}progtrckr-todo{% endif %}">Shipped
+                </li>
+                <li class="{% if order_instance.status >= 4 %}progtrckr-done{% else %}progtrckr-todo{% endif %}">
+                    Delivered</li>
+            </ol>
+        </div>
+
     </div>
+
+</div>
+
 
 {% endblock %}
