@@ -10,9 +10,9 @@ from decouple import config
 import secrets
 import random
 from decimal import Decimal
+from twilio.rest import Client
 '''from validate_email_address import validate_email'''
 from django.core.validators import validate_email
-from twilio.rest import Client
 from twilio.base.exceptions import TwilioRestException
 import copy
 from django.conf import settings
@@ -179,11 +179,13 @@ def login_user(request):
         if not input_value :
             messages.info(request, 'please fill the email ID or Phone Number')
         is_mobile = validate_phone_number(input_value)
+        print(is_mobile, 'is mobiesdsd')
         # mobile is a bool true from validation
         if is_mobile:
             user = None
             try:
                 user = User.objects.get(phone=input_value)
+                print(user, 'useersdsd')
             except User.DoesNotExist:
                 messages.info(request, 'Invalid phone number')
                 return redirect('login')
@@ -234,6 +236,7 @@ TWILIO_AUTH_TOKEN = config('TWILIO_AUTH_TOKEN', default='')
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @never_cache
 def verify_signin(request):
+    print(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, 'TWILIO_AUTH_TOKENTWILIO_AUTH_TOKEN')
     try:
         if 'sent_otp' not in request.session:
             otp = random.randint(1000, 9999)  # Generate a random OTP
@@ -247,7 +250,11 @@ def verify_signin(request):
             phone = str(phone_number)
             # using TWILIO for mobile OTP
             client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
-            msg = client.messages.create(body=f"Your OTP is: {otp}",from_="+16187624743",to = phone)
+            print(client)
+            print(f"Your OTP is: {otp}")
+            msg = client.messages.create(body=f"Your OTP is: {otp}",from_="+16593335402",to = phone)
+            print(msg)
+            
         # checking user entered OTP with shared OTP via twilio
         if request.method == 'POST':
             user_provided_otp = request.POST.get('mobileotp')  
